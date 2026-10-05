@@ -1,0 +1,2877 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Studio Art Skills | Prototype Platform Pembelajaran Seni</title>
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    /* Styling System matches global.css design system */
+    :root {
+      --bg-primary: #0b0f19;
+      --bg-secondary: #131b2e;
+      --bg-tertiary: #1e293b;
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent-cyan: #06b6d4;
+      --accent-blue: #3b82f6;
+      --accent-glow: rgba(6, 182, 212, 0.15);
+      --reward-gold: #f59e0b;
+      --reward-glow: rgba(245, 158, 11, 0.15);
+      --success: #10b981;
+      --error: #ef4444;
+      --glass-bg: rgba(19, 27, 46, 0.7);
+      --glass-border: rgba(255, 255, 255, 0.06);
+      --glass-shadow: rgba(0, 0, 0, 0.4);
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --font-heading: 'Outfit', 'Inter', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    a, button {
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    /* Layout structure */
+    .app-container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Public Header */
+    header {
+      position: sticky;
+      top: 0;
+      background: rgba(11, 15, 25, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--glass-border);
+      z-index: 100;
+      padding: 16px 0;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .flex { display: flex; }
+    .flex-col { flex-direction: column; }
+    .items-center { align-items: center; }
+    .justify-between { justify-content: space-between; }
+    .gap-2 { gap: 8px; }
+    .gap-4 { gap: 16px; }
+    .gap-6 { gap: 24px; }
+    
+    .grid {
+      display: grid;
+      gap: 24px;
+    }
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+    @media (max-width: 768px) {
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      .app-layout { flex-direction: column; }
+      .sidebar { width: 100% !important; border-right: none !important; border-bottom: 1px solid var(--glass-border); }
+      
+      header .container {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+      }
+      #header-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+      }
+      h1 { font-size: 32px !important; }
+      h2 { font-size: 22px !important; }
+    }
+
+    .responsive-lesson-grid {
+      display: grid;
+      gap: 24px;
+      grid-template-columns: 2fr 1fr;
+    }
+    @media (max-width: 768px) {
+      .responsive-lesson-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      border: 1px solid transparent;
+      font-size: 14px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+      color: white;
+      box-shadow: 0 4px 14px var(--accent-glow);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(6, 182, 212, 0.3);
+    }
+
+    .btn-secondary {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+      border-color: var(--glass-border);
+    }
+    .btn-secondary:hover {
+      background: #27354a;
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text-primary);
+      border: 1px solid var(--accent-cyan);
+    }
+    .btn-outline:hover {
+      background: var(--accent-glow);
+      transform: translateY(-2px);
+    }
+
+    /* Cards */
+    .card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      box-shadow: 0 8px 32px var(--glass-shadow);
+      backdrop-filter: blur(8px);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card-hover:hover {
+      transform: translateY(-6px);
+      border-color: rgba(6, 182, 212, 0.3);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), 0 0 15px var(--accent-glow);
+    }
+
+    /* Tags */
+    .tag {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-weight: 600;
+      text-transform: capitalize;
+    }
+    .tag-cyan { background: rgba(6, 182, 212, 0.1); color: var(--accent-cyan); border: 1px solid rgba(6, 182, 212, 0.2); }
+    .tag-blue { background: rgba(59, 130, 246, 0.1); color: var(--accent-blue); border: 1px solid rgba(59, 130, 246, 0.2); }
+    .tag-gold { background: rgba(245, 158, 11, 0.1); color: var(--reward-gold); border: 1px solid rgba(245, 158, 11, 0.2); }
+
+    /* Forms */
+    .form-group {
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-label {
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+    .form-control {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      color: var(--text-primary);
+      width: 100%;
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 0 2px var(--accent-glow);
+    }
+
+    /* Authenticated Layout with Sidebar */
+    .app-layout {
+      display: flex;
+      min-height: calc(100vh - 73px);
+    }
+
+    .sidebar {
+      width: 260px;
+      background: var(--bg-secondary);
+      border-right: 1px solid var(--glass-border);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .main-content {
+      flex-grow: 1;
+      padding: 32px;
+      background: var(--bg-primary);
+    }
+
+    .sidebar-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      border-radius: var(--radius-md);
+      text-decoration: none;
+      border: 1px solid transparent;
+    }
+
+    .sidebar-link:hover, .sidebar-link.active {
+      background: linear-gradient(135deg, var(--bg-tertiary), rgba(6,182,212,0.1));
+      color: var(--accent-cyan);
+      border-color: rgba(6, 182, 212, 0.15);
+    }
+
+    /* Custom progress bar */
+    .progress-container {
+      width: 100%;
+      height: 8px;
+      background: var(--bg-primary);
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid var(--glass-border);
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue));
+      width: 0%;
+      transition: width 0.8s ease;
+    }
+
+    /* Accordion styles */
+    .accordion-header {
+      padding: 16px;
+      background: rgba(19, 27, 46, 0.4);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .accordion-content {
+      padding: 16px;
+      background: rgba(19, 27, 46, 0.2);
+      border-left: 2px solid var(--accent-cyan);
+      display: none;
+    }
+
+    /* Modals & lightboxes */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(5, 7, 12, 0.9);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .modal-content {
+      background: var(--bg-secondary);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      max-width: 900px;
+      width: 100%;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+
+    /* Animation effects */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-fade {
+      animation: fadeIn 0.4s ease forwards;
+    }
+
+    /* Pulse Glow */
+    .pulse-glow {
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.4); }
+      70% { box-shadow: 0 0 0 8px rgba(6, 182, 212, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0); }
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 14px;
+      margin-top: 16px;
+    }
+    th {
+      color: var(--text-muted);
+      font-weight: 600;
+      padding: 12px;
+      border-bottom: 1px solid var(--glass-border);
+    }
+    td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.02);
+      color: var(--text-secondary);
+    }
+    tr:hover td {
+      color: var(--text-primary);
+      background: rgba(255,255,255,0.01);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ROOT VIRTUAL CONTAINER -->
+  <div class="app-container">
+
+    <!-- PUBLIC NAVIGATION -->
+    <header id="public-header">
+      <div class="container flex justify-between items-center">
+        <a href="#" onclick="showSection('home-public')" class="flex items-center gap-2" style="font-weight: 800; font-size: 22px; text-decoration: none;">
+          <span style="font-size: 28px;">🎨</span>
+          Studio <span style="color: var(--accent-cyan);">Art Skills</span>
+          <span id="db-status-badge" class="tag tag-blue" style="font-size: 10px; margin-left: 6px; padding: 2px 8px;">🔌 LocalStorage</span>
+        </a>
+        
+        <div class="flex items-center gap-4" id="header-links">
+          <a href="#" onclick="showSection('home-public')" data-i18n="nav-home" style="color: var(--text-secondary); text-decoration: none;">Home</a>
+          <a href="#" onclick="showSection('public-modules')" data-i18n="nav-modules" style="color: var(--text-secondary); text-decoration: none;">Modul Seni</a>
+          <a href="#" onclick="showSection('public-portfolio')" data-i18n="nav-portfolio" style="color: var(--text-secondary); text-decoration: none;">Portofolio</a>
+          
+          <span style="border-left: 1px solid var(--glass-border); height: 20px;"></span>
+          
+          <!-- LANGUAGE SELECTOR BUTTON -->
+          <button onclick="toggleLanguage()" id="lang-switch-btn" class="btn btn-secondary" style="padding: 8px 12px; font-size: 13px;">
+            🇬🇧 EN
+          </button>
+          
+          <button onclick="showSection('login')" data-i18n="nav-login" class="btn btn-secondary" style="padding: 8px 16px;">Masuk</button>
+          <button onclick="showSection('register')" data-i18n="nav-register" class="btn btn-primary pulse-glow" style="padding: 8px 18px;">Mulai Belajar</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN FRAME (DYNAMIC SECTIONS) -->
+
+    <!-- 1. PUBLIC DASHBOARD (HOME) -->
+    <div id="sec-home-public" class="section animate-fade" style="display: block;">
+      <!-- Hero Banner -->
+      <section style="padding: 90px 0 60px 0; background: radial-gradient(circle at 80% 20%, rgba(6, 182, 212, 0.12), transparent 50%);">
+        <div class="container grid grid-2 items-center">
+          <div class="flex flex-col gap-6">
+            <span class="tag tag-cyan" style="width: fit-content;" data-i18n="hero-tag">🌟 Platform Pembelajaran Seni #1</span>
+            <h1 data-i18n="hero-title" style="font-size: 46px; font-weight: 800; line-height: 1.15; background: linear-gradient(135deg, #fff 40%, var(--accent-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+              Kuasai Seni Lukis & Gambar dari Nol
+            </h1>
+            <p data-i18n="hero-desc" style="color: var(--text-secondary); fontSize: 17px;">
+              Belajar secara terstruktur dengan modul langkah demi langkah. Dapatkan koreksi visual dan feedback skor langsung dari mentor profesional berbasis rubrik penilaian terstandar.
+            </p>
+            <div class="flex gap-4" style="margin-top: 8px;">
+              <button onclick="showSection('register')" data-i18n="btn-register-learner" class="btn btn-primary pulse-glow" style="padding: 12px 28px; font-size: 15px;">Daftar Akun Learner</button>
+              <button onclick="showSection('login')" data-i18n="btn-login-demo" class="btn btn-secondary" style="padding: 12px 28px; font-size: 15px;">Akses Akun Demo</button>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: center;">
+            <div style="width: 100%; max-width: 440px; height: 320px; border-radius: 16px; overflow: hidden; border: 1px solid var(--glass-border); box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 20px var(--accent-glow);">
+              <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=800&q=80" style="width: 100%; height: 100%; object-fit: cover;" alt="Hero Art">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Stats section -->
+      <section style="padding: 30px 0;">
+        <div class="container grid grid-4">
+          <div class="card flex items-center gap-4" style="padding: 18px;">
+            <span style="font-size: 24px; padding: 10px; background: rgba(6, 182, 212, 0.1); border-radius: 8px; color: var(--accent-cyan);">📖</span>
+            <div>
+              <div data-i18n="stat-modules" style="font-size: 12px; color: var(--text-muted);">Modul Seni Aktif</div>
+              <div style="font-size: 24px; font-weight: 800;">5</div>
+            </div>
+          </div>
+          <div class="card flex items-center gap-4" style="padding: 18px;">
+            <span style="font-size: 24px; padding: 10px; background: rgba(6, 182, 212, 0.1); border-radius: 8px; color: var(--accent-blue);">👨‍🎨</span>
+            <div>
+              <div data-i18n="stat-students" style="font-size: 12px; color: var(--text-muted);">Siswa Bergabung</div>
+              <div style="font-size: 24px; font-weight: 800;">1,250</div>
+            </div>
+          </div>
+          <div class="card flex items-center gap-4" style="padding: 18px;">
+            <span style="font-size: 24px; padding: 10px; background: rgba(6, 182, 212, 0.1); border-radius: 8px; color: var(--success);">✔️</span>
+            <div>
+              <div data-i18n="stat-reviewed" style="font-size: 12px; color: var(--text-muted);">Tugas Dinilai</div>
+              <div style="font-size: 24px; font-weight: 800;">840</div>
+            </div>
+          </div>
+          <div class="card flex items-center gap-4" style="padding: 18px;">
+            <span style="font-size: 24px; padding: 10px; background: rgba(6, 182, 212, 0.1); border-radius: 8px; color: var(--reward-gold);">💼</span>
+            <div>
+              <div data-i18n="stat-portfolio" style="font-size: 12px; color: var(--text-muted);">Karya Portofolio</div>
+              <div style="font-size: 24px; font-weight: 800;">620</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Benefits Section -->
+      <section style="padding: 50px 0;">
+        <div class="container flex flex-col gap-8">
+          <div style="text-align: center; max-width: 550px; margin: 0 auto;">
+            <h2 data-i18n="benefits-title" style="font-size: 28px;">Keunggulan Studio Art Skills</h2>
+            <p data-i18n="benefits-subtitle" style="color: var(--text-secondary); margin-top: 6px;">Kami menyusun standar akademi agar latihan Anda membuahkan hasil nyata.</p>
+          </div>
+          <div class="grid grid-3">
+            <div class="card card-hover flex flex-col gap-4">
+              <span style="font-size: 30px;">📚</span>
+              <h4 data-i18n="benefit-1-title">Jalur Belajar Terarah</h4>
+              <p data-i18n="benefit-1-desc" style="color: var(--text-secondary); font-size: 13.5px;">Setiap langkah didesain berurutan dari kontrol garis dasar, shading pencahayaan, hingga proyek akhir.</p>
+            </div>
+            <div class="card card-hover flex flex-col gap-4">
+              <span style="font-size: 30px;">🧐</span>
+              <h4 data-i18n="benefit-2-title">Rubrik Evaluasi Mentor</h4>
+              <p data-i18n="benefit-2-desc" style="color: var(--text-secondary); font-size: 13.5px;">Dapatkan skor terinci dari mentor pada aspek bentuk dasar, teknik arsir, komposisi warna, dan anatomi.</p>
+            </div>
+            <div class="card card-hover flex flex-col gap-4">
+              <span style="font-size: 30px;">🏅</span>
+              <h4 data-i18n="benefit-3-title">Lencana & Sertifikasi</h4>
+              <p data-i18n="benefit-3-desc" style="color: var(--text-secondary); font-size: 13.5px;">Selesaikan modul latihan dan raih badge eksklusif sebagai pencapaian atas skill menggambar Anda.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Featured Modules syllabus -->
+      <section style="padding: 50px 0; background: rgba(255,255,255,0.01);">
+        <div class="container flex flex-col gap-6">
+          <div class="flex justify-between items-end">
+            <div>
+              <h2 data-i18n="featured-modules-title" style="font-size: 28px;">Contoh Modul Belajar</h2>
+              <p data-i18n="featured-modules-subtitle" style="color: var(--text-secondary); margin-top: 4px;">Lihat kurikulum dasar yang dapat Anda pelajari segera.</p>
+            </div>
+            <button onclick="showSection('public-modules')" data-i18n="btn-all-modules" class="btn btn-outline" style="padding: 8px 16px;">Semua Modul</button>
+          </div>
+
+          <div class="grid grid-3" id="featured-modules-container">
+            <!-- Render dynamically -->
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ Accordion -->
+      <section style="padding: 50px 0;">
+        <div class="container" style="max-width: 750px;">
+          <h2 data-i18n="faq-title" style="font-size: 28px; text-align: center; margin-bottom: 24px;">Pertanyaan Umum</h2>
+          <div class="flex flex-col gap-4">
+            <div class="card" style="padding: 16px;">
+              <h4 data-i18n="faq-1-q" style="font-size: 15px; margin-bottom: 6px;">Apakah platform ini gratis untuk dicoba?</h4>
+              <p data-i18n="faq-1-a" style="color: var(--text-secondary); font-size: 13px;">Ya! Anda dapat melihat silabus modul, membaca materi pelajaran demo, dan melihat galeri portofolio publik tanpa mendaftar akun.</p>
+            </div>
+            <div class="card" style="padding: 16px;">
+              <h4 data-i18n="faq-2-q" style="font-size: 15px; margin-bottom: 6px;">Bagaimana mentor memberikan penilaian?</h4>
+              <p data-i18n="faq-2-a" style="color: var(--text-secondary); font-size: 13px;">Setiap materi latihan dilengkapi dengan rubrik penilaian. Mentor akan memberikan poin skor (1-10) per kriteria, serta komentar feedback langsung pada karya Anda.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- 2. PUBLIC MODULES CATALOG -->
+    <div id="sec-public-modules" class="section animate-fade" style="display: none; padding: 40px 0;">
+      <div class="container flex flex-col gap-6">
+        <div>
+          <h1 data-i18n="catalog-title" style="font-size: 30px;">Katalog Modul Seni</h1>
+          <p data-i18n="catalog-subtitle" style="color: var(--text-secondary);">Telusuri silabus dan levels materi pelajaran dari dasar.</p>
+        </div>
+        <div class="grid grid-3" id="public-modules-list">
+          <!-- Dyn -->
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. PUBLIC PORTFOLIO PREVIEW -->
+    <div id="sec-public-portfolio" class="section animate-fade" style="display: none; padding: 40px 0;">
+      <div class="container flex flex-col gap-6">
+        <div>
+          <h1 data-i18n="portfolio-title" style="font-size: 30px;">Galeri Portofolio Publik</h1>
+          <p data-i18n="portfolio-subtitle" style="color: var(--text-secondary);">Karya lukis dan sketsa terbaik hasil karya siswa Studio Art Skills.</p>
+        </div>
+        <div class="grid grid-3" id="public-portfolio-list">
+          <!-- Dyn -->
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. LOGIN SECTION -->
+    <div id="sec-login" class="section animate-fade" style="display: none; padding: 50px 0;">
+      <div class="container flex items-center justify-center" style="min-height: 70vh;">
+        <div class="grid grid-2 card" style="padding: 0; overflow: hidden; max-width: 800px; width: 100%;">
+          
+          <!-- Form -->
+          <div style="padding: 40px;">
+            <h2 data-i18n="login-title" style="font-size: 24px; margin-bottom: 8px;">Selamat Datang</h2>
+            <p data-i18n="login-subtitle" style="color: var(--text-secondary); font-size: 13px; margin-bottom: 24px;">Silakan masuk menggunakan kredensial demo di sebelah kanan.</p>
+            
+            <form onsubmit="handleLoginSubmit(event)" class="flex flex-col gap-4">
+              <div class="form-group">
+                <label className="form-label" data-i18n="label-email">Email</label>
+                <input type="email" id="login-email" class="form-control" placeholder="learner@studioart.com" required>
+              </div>
+              <div class="form-group" style="margin-bottom: 20px;">
+                <label className="form-label" data-i18n="label-password">Password</label>
+                <input type="password" id="login-password" class="form-control" value="password123" required>
+              </div>
+              <button type="submit" data-i18n="btn-submit-login" class="btn btn-primary" style="width: 100%; padding: 12px;">Masuk ke Platform</button>
+            </form>
+          </div>
+
+          <!-- Redirection tools -->
+          <div style="background: linear-gradient(135deg, var(--bg-secondary), rgba(6,182,212,0.08)); padding: 40px; border-left: 1px solid var(--glass-border); display: flex; flex-direction: column; justify-content: center;">
+            <h4 data-i18n="demo-title" style="font-size: 16px; margin-bottom: 12px; color: var(--accent-cyan);">Akses Akun Demo Instan</h4>
+            <p data-i18n="demo-subtitle" style="color: var(--text-secondary); font-size: 12px; margin-bottom: 20px;">Klik salah satu tombol untuk langsung menguji sistem dengan peran tertentu:</p>
+            
+            <div class="flex flex-col gap-2">
+              <button onclick="quickLogin('learner')" class="btn btn-secondary" style="padding: 8px 12px; font-size: 13px; justify-content: flex-start;">
+                🧑‍🎓 Akun Learner (Siswa)
+              </button>
+              <button onclick="quickLogin('mentor')" class="btn btn-secondary" style="padding: 8px 12px; font-size: 13px; justify-content: flex-start;">
+                👩‍🏫 Akun Mentor (Penilai)
+              </button>
+              <button onclick="quickLogin('admin')" class="btn btn-secondary" style="padding: 8px 12px; font-size: 13px; justify-content: flex-start;">
+                ⚙️ Akun Admin (Pengelola)
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. REGISTER SECTION -->
+    <div id="sec-register" class="section animate-fade" style="display: none; padding: 50px 0;">
+      <div class="container flex items-center justify-center" style="min-height: 70vh;">
+        <div class="card" style="max-width: 450px; width: 100%;">
+          <h2 data-i18n="register-title" style="font-size: 24px; margin-bottom: 6px;">Daftar Akun Siswa</h2>
+          <p data-i18n="register-subtitle" style="color: var(--text-secondary); font-size: 13px; margin-bottom: 20px;">Mulai latihan seni terstruktur Anda hari ini.</p>
+          
+          <form onsubmit="handleRegisterSubmit(event)" class="flex flex-col gap-4">
+            <div class="form-group">
+              <label className="form-label" data-i18n="label-name">Nama Lengkap</label>
+              <input type="text" id="reg-name" class="form-control" placeholder="Nama Anda" required>
+            </div>
+            <div class="form-group">
+              <label className="form-label" data-i18n="label-email">Email</label>
+              <input type="email" id="reg-email" class="form-control" placeholder="email@contoh.com" required>
+            </div>
+            <div class="form-group" style="margin-bottom: 20px;">
+              <label className="form-label" data-i18n="label-password">Password</label>
+              <input type="password" id="reg-pass" class="form-control" placeholder="Minimal 6 karakter" required>
+            </div>
+            <button type="submit" data-i18n="btn-submit-register" class="btn btn-primary" style="width: 100%; padding: 12px;">Buat Akun Siswa</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ==========================================
+         AUTHENTICATED WORKSPACE LAYOUT FRAMES 
+         ========================================== -->
+    <div id="auth-workspace-frame" style="display: none;">
+      <div class="app-layout">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+          <div>
+            <div class="flex items-center gap-2" style="font-weight: 800; font-size: 18px; margin-bottom: 24px;">
+              <span>🎨</span> Studio <span style="color: var(--accent-cyan);">Art</span>
+              <span id="sidebar-db-status-badge" class="tag tag-blue" style="font-size: 9px; padding: 1px 6px;">🔌 LocalStorage</span>
+            </div>
+
+            <!-- Profile Info Widget -->
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); padding: 16px; borderRadius: 12px; margin-bottom: 24px; text-align: center; border-radius: 8px;">
+              <img id="sidebar-avatar" src="" style="width: 54px; height: 54px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-cyan); margin-bottom: 8px;">
+              <h4 id="sidebar-name" style="font-size: 14px; font-weight: 700; color: var(--text-primary);"></h4>
+              <span id="sidebar-role-badge" class="tag tag-cyan" style="font-size: 9px; padding: 2px 8px; margin-top: 4px; display: inline-block;"></span>
+            </div>
+
+            <!-- Sidebar dynamic menu -->
+            <div class="sidebar-menu" id="sidebar-menu-links">
+              <!-- Rendered based on role -->
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <!-- Sidebar Language Toggle Button -->
+            <button onclick="toggleLanguage()" class="btn btn-secondary" style="width: 100%; justify-content: flex-start; padding: 10px 16px;">
+              🌐 Language: <span id="sidebar-lang-indicator" style="color: var(--accent-cyan); font-weight: bold; margin-left: 4px;">ID</span>
+            </button>
+            
+            <button onclick="logout()" class="btn" style="background: rgba(239, 68, 68, 0.1); color: var(--error); border: 1px solid rgba(239, 68, 68, 0.2); width: 100%; justify-content: flex-start; padding: 10px 16px;">
+              🚪 <span data-i18n="btn-logout">Keluar</span>
+            </button>
+          </div>
+        </aside>
+
+        <!-- Main workspace views -->
+        <main class="main-content">
+          
+          <!-- VIEW: LEARNER DASHBOARD -->
+          <div id="view-learner-dashboard" class="view-pane animate-fade" style="display: none;">
+            <div class="card flex justify-between items-center" style="background: linear-gradient(135deg, rgba(19, 27, 46, 0.9), rgba(59, 130, 246, 0.15)); padding: 24px; margin-bottom: 24px; border: 1px solid rgba(59, 130, 246, 0.2);">
+              <div>
+                <h1 data-i18n="dash-welcome" style="font-size: 26px; margin-bottom: 4px;">Selamat Latihan! 🎨</h1>
+                <p data-i18n="dash-subtitle" style="color: var(--text-secondary); font-size: 14px;">Centang checklist di materi belajar lalu unggah karya terbaik Anda untuk dinilai mentor.</p>
+              </div>
+              <div class="flex gap-4">
+                <div style="background: rgba(255,255,255,0.03); padding: 10px 18px; border-radius: 8px; border: 1px solid var(--glass-border); text-align: center;">
+                  <div style="font-size: 9px; color: var(--text-muted); font-weight: 600;">XP POINT</div>
+                  <div style="font-size: 18px; font-weight: 800; color: var(--reward-gold);">150 XP</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-3" style="grid-template-columns: 2fr 1fr;">
+              <!-- Left -->
+              <div class="flex flex-col gap-6">
+                <div>
+                  <h3 data-i18n="dash-modules-title" style="font-size: 18px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">📖 Modul Aktif Anda</h3>
+                  <div class="flex flex-col gap-3" id="learner-active-modules">
+                    <!-- Dyn -->
+                  </div>
+                </div>
+                
+                <div>
+                  <h3 data-i18n="dash-tasks-title" style="font-size: 18px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">✔️ Tugas / Latihan Hari Ini</h3>
+                  <div class="card flex flex-col gap-3" style="padding: 16px;">
+                    <div style="font-size: 13.5px; color: var(--text-secondary);"><input type="checkbox" checked disabled> <span data-i18n="task-1-mock">Latihan Kontrol Garis (Fundamental Drawing)</span></div>
+                    <div style="font-size: 13.5px; color: var(--text-secondary);"><input type="checkbox" id="chk-dash-2"> <span data-i18n="task-2-mock">Latihan 9-Value Scale (Shading & Light)</span></div>
+                    <div style="font-size: 13.5px; color: var(--text-secondary);"><input type="checkbox" id="chk-dash-3"> <span data-i18n="task-3-mock">Upload Karya pertama ke Portofolio Digital</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right -->
+              <div class="flex flex-col gap-6">
+                <div>
+                  <h3 data-i18n="dash-badges-title" style="font-size: 18px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">🏅 Lencana Tercapai</h3>
+                  <div class="grid grid-2" id="learner-badges-grid" style="gap: 10px;">
+                    <!-- Dyn -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- VIEW: MODULES LIST -->
+          <div id="view-modules" class="view-pane animate-fade" style="display: none;">
+            <h2 data-i18n="view-modules-title" style="font-size: 26px; margin-bottom: 4px;">Modul Kurikulum Seni</h2>
+            <p data-i18n="view-modules-subtitle" style="color: var(--text-secondary); font-size: 14px; margin-bottom: 24px;">Silakan pilih modul di bawah untuk memulai pembelajaran terstruktur.</p>
+            <div class="grid grid-3" id="workspace-modules-list">
+              <!-- Dyn -->
+            </div>
+          </div>
+
+          <!-- VIEW: MODULE DETAIL -->
+          <div id="view-module-detail" class="view-pane animate-fade" style="display: none;">
+            <button onclick="showWorkspaceView('modules')" data-i18n="btn-back-catalog" class="btn btn-secondary" style="padding: 6px 12px; font-size: 12px; margin-bottom: 16px;">
+              ⬅️ Kembali ke Katalog
+            </button>
+            <div class="card" style="padding: 0; overflow: hidden; margin-bottom: 24px;">
+              <div style="height: 140px; background: linear-gradient(135deg, #1e293b, #0f172a); padding: 24px; display: flex; flex-direction: column; justify-content: flex-end;">
+                <span class="tag tag-cyan" id="md-level" style="width: fit-content; margin-bottom: 6px;"></span>
+                <h2 id="md-title" style="font-size: 24px; color: white;"></h2>
+              </div>
+              <div style="padding: 20px;">
+                <p id="md-desc" style="color: var(--text-secondary); font-size: 14px; line-height: 1.6; margin-bottom: 20px;"></p>
+                <div>
+                  <h4 data-i18n="md-progress-label" style="font-size: 13px; color: var(--text-muted); margin-bottom: 6px;">Progres Kurikulum:</h4>
+                  <div class="progress-container">
+                    <div class="progress-fill" id="md-progress-bar" style="width: 50%;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <h3 data-i18n="md-lessons-title" style="font-size: 18px; margin-bottom: 12px;">Daftar Pelajaran / Lesson</h3>
+            <div class="flex flex-col gap-3" id="module-lessons-list">
+              <!-- Dyn -->
+            </div>
+          </div>
+
+          <!-- VIEW: LESSON PAGE -->
+          <div id="view-lesson" class="view-pane animate-fade" style="display: none;">
+            <button onclick="showWorkspaceView('module-detail')" data-i18n="btn-back-outline" class="btn btn-secondary" style="padding: 6px 12px; font-size: 12px; margin-bottom: 16px;">
+              ⬅️ Kembali ke Outline Modul
+            </button>
+            <div class="responsive-lesson-grid">
+              <!-- Left lesson video & instruction -->
+              <div class="flex flex-col gap-6">
+                <div>
+                  <span class="tag tag-cyan" id="les-order-tag">Pelajaran #1</span>
+                  <h2 id="les-title" style="font-size: 26px; margin: 4px 0 8px 0;"></h2>
+                </div>
+
+                <div style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; border: 1px solid var(--glass-border);">
+                  <iframe id="les-video" src="" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+
+                <div class="card" id="les-content" style="font-size: 14px; color: var(--text-secondary);">
+                  <!-- Dyn -->
+                </div>
+              </div>
+
+              <!-- Right checkmarks & upload -->
+              <div class="flex flex-col gap-6">
+                <div class="card">
+                  <h3 data-i18n="les-checklist-title" style="font-size: 16px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">✔️ Checklist Latihan</h3>
+                  <div class="flex flex-col gap-3" id="les-checklist-container">
+                    <!-- Dyn -->
+                  </div>
+                </div>
+
+                <div class="card">
+                  <h3 data-i18n="les-upload-title" style="font-size: 16px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">📤 Kumpulkan Karya Seni</h3>
+                  <div id="les-upload-section">
+                    <!-- Dyn based on submission status -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- VIEW: FEEDBACK & GRADING LIST -->
+          <div id="view-feedback" class="view-pane animate-fade" style="display: none;">
+            <div class="grid grid-3" style="grid-template-columns: 2fr 1fr;" id="feedback-mentor-container">
+              
+              <!-- Left (Learner list, or Mentor pending list) -->
+              <div class="flex flex-col gap-6">
+                <h2 style="font-size: 26px; margin-bottom: 4px;" id="feedback-view-title">Ulasan Karya Seni</h2>
+                <div class="grid grid-2" id="feedback-submissions-grid" style="gap: 16px;">
+                  <!-- Dyn -->
+                </div>
+              </div>
+
+              <!-- Right review tool (only for Mentors) -->
+              <div>
+                <h3 data-i18n="mentor-panel-title" style="font-size: 18px; margin-bottom: 12px;">Panel Koreksi Mentor</h3>
+                <div class="card" id="mentor-scoring-card" style="padding: 20px;">
+                  <!-- Dyn scoring tool -->
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- VIEW: DIGITAL PORTFOLIO -->
+          <div id="view-portfolio" class="view-pane animate-fade" style="display: none;">
+            <div class="flex justify-between items-center" style="margin-bottom: 24px;">
+              <div>
+                <h2 data-i18n="port-title-workspace">Portofolio Digital</h2>
+                <p data-i18n="port-subtitle-workspace" style="color: var(--text-secondary); font-size: 14px;">Karya seni terunggul hasil latihan belajar Anda.</p>
+              </div>
+              <button onclick="openUploadPortfolioModal()" class="btn btn-primary" id="btn-add-portfolio" style="display: none; padding: 8px 16px;">
+                ➕ <span data-i18n="btn-upload-portfolio">Unggah Karya Baru</span>
+              </button>
+            </div>
+            <div class="grid grid-3" id="portfolio-grid-container">
+              <!-- Dyn -->
+            </div>
+          </div>
+
+          <!-- VIEW: ADMIN DASHBOARD -->
+          <div id="view-admin" class="view-pane animate-fade" style="display: none;">
+            <h2 style="font-size: 26px; margin-bottom: 20px;">Admin Control Panel</h2>
+            
+            <div class="grid grid-4" style="margin-bottom: 30px;">
+              <div class="card" style="padding: 16px; text-align: center;">
+                <div style="font-size: 12px; color: var(--text-muted);">Total User</div>
+                <div style="font-size: 26px; font-weight: 800; color: var(--accent-cyan);" id="adm-stat-users">0</div>
+              </div>
+              <div class="card" style="padding: 16px; text-align: center;">
+                <div style="font-size: 12px; color: var(--text-muted);">Modul Seni</div>
+                <div style="font-size: 26px; font-weight: 800; color: var(--accent-blue);" id="adm-stat-modules">0</div>
+              </div>
+              <div class="card" style="padding: 16px; text-align: center;">
+                <div style="font-size: 12px; color: var(--text-muted);">Submissions</div>
+                <div style="font-size: 26px; font-weight: 800; color: var(--reward-gold);" id="adm-stat-subs">0</div>
+              </div>
+              <div class="card" style="padding: 16px; text-align: center;">
+                <div style="font-size: 12px; color: var(--text-muted);">Badges</div>
+                <div style="font-size: 26px; font-weight: 800; color: var(--success);" id="adm-stat-badges">0</div>
+              </div>
+            </div>
+
+            <!-- Tab views for CRUD -->
+            <div class="flex gap-2" style="border-bottom: 1px solid var(--glass-border); padding-bottom: 10px; margin-bottom: 20px;">
+              <button onclick="switchAdminTab('modules')" id="btn-adm-modules" class="btn btn-primary">Modul ({0})</button>
+              <button onclick="switchAdminTab('users')" id="btn-adm-users" class="btn btn-secondary">Users ({0})</button>
+              <button onclick="switchAdminTab('subs')" id="btn-adm-subs" class="btn btn-secondary">Submissions ({0})</button>
+            </div>
+
+            <div class="card" style="padding: 20px;">
+              <div id="adm-crud-content">
+                <!-- CRUD tables dynamically rendered -->
+              </div>
+            </div>
+          </div>
+
+        </main>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PORTFOLIO LIGHTBOX MODAL -->
+  <div class="modal-overlay" id="lightbox-modal" onclick="closeLightbox()">
+    <div class="modal-content animate-fade" style="display: grid; grid-template-columns: 1.2fr 1fr;" onclick="event.stopPropagation()">
+      <div style="background: black; display: flex; align-items: center; justify-content: center; height: 100%; position: relative; min-height: 400px;">
+        <img id="lightbox-img" src="" style="max-width: 100%; max-height: 480px; object-fit: contain;">
+        <button onclick="closeLightbox()" class="btn btn-secondary" style="position: absolute; top: 12px; left: 12px; padding: 6px; border-radius: 50%;">✕</button>
+      </div>
+      <div class="flex flex-col justify-between" style="padding: 30px;">
+        <div>
+          <span class="tag tag-cyan" data-i18n="lightbox-tag" style="font-size: 11px;">Karya Portofolio</span>
+          <h2 id="lightbox-title" style="font-size: 24px; margin: 8px 0 12px 0;"></h2>
+          <h4 data-i18n="lightbox-process-label" style="font-size: 13.5px; color: var(--accent-cyan); margin-bottom: 4px;">Refleksi & Catatan Proses:</h4>
+          <p id="lightbox-reflection" style="color: var(--text-secondary); font-size: 13.5px; line-height: 1.6; margin-bottom: 20px;"></p>
+          <div id="lightbox-tags" class="flex gap-2 flex-wrap"></div>
+        </div>
+        <button onclick="closeLightbox()" data-i18n="btn-close" class="btn btn-secondary" style="width: 100%; margin-top: 20px;">Tutup Galeri</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- UPLOAD PORTFOLIO POPUP MODAL -->
+  <div class="modal-overlay" id="upload-portfolio-modal">
+    <div class="card animate-fade" style="max-width: 500px; width: 100%; background: var(--bg-secondary);" onclick="event.stopPropagation()">
+      <div class="flex justify-between items-center" style="margin-bottom: 16px;">
+        <h3 data-i18n="up-modal-title" style="font-size: 20px;">Unggah Karya Seni Baru</h3>
+        <button onclick="closeUploadPortfolioModal()" class="btn" style="background: transparent; color: var(--text-muted); font-size: 18px;">✕</button>
+      </div>
+      <form onsubmit="handleUploadPortfolio(event)" class="flex flex-col gap-4">
+        <div class="form-group">
+          <label className="form-label" data-i18n="up-modal-label-title">Judul Karya</label>
+          <input type="text" id="port-title" class="form-control" placeholder="Contoh: Still Life Apel Merah" required>
+        </div>
+        <div class="form-group">
+          <label className="form-label" data-i18n="up-modal-label-url">URL Gambar (Demo Link)</label>
+          <input type="text" id="port-url" class="form-control" value="https://images.unsplash.com/photo-1605721911519-3dfeb3be25e7?auto=format&fit=crop&w=600&h=400&q=80" required>
+        </div>
+        <div class="form-group">
+          <label className="form-label" data-i18n="up-modal-label-tags">Tags / Kategori (Pisahkan dengan koma)</label>
+          <input type="text" id="port-tags" class="form-control" placeholder="Sketsa, Arsir, Pensil">
+        </div>
+        <div class="form-group">
+          <label className="form-label" data-i18n="up-modal-label-reflection">Catatan Refleksi & Proses</label>
+          <textarea id="port-reflection" class="form-control" rows="3" placeholder="Apa kesulitan yang Anda temui saat arsir?" style="resize:none;"></textarea>
+        </div>
+        <button type="submit" data-i18n="up-modal-btn-submit" class="btn btn-primary" style="width: 100%; padding: 10px;">Simpan ke Portofolio</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ADMIN ADD MODULE POPUP MODAL -->
+  <div class="modal-overlay" id="admin-module-modal">
+    <div class="card animate-fade" style="max-width: 500px; width: 100%; background: var(--bg-secondary);" onclick="event.stopPropagation()">
+      <div class="flex justify-between items-center" style="margin-bottom: 16px;">
+        <h3 style="font-size: 20px;">Tambah Modul Seni</h3>
+        <button onclick="closeAdminModuleModal()" class="btn" style="background: transparent; color: var(--text-muted); font-size: 18px;">✕</button>
+      </div>
+      <form onsubmit="handleAdminCreateModule(event)" class="flex flex-col gap-4">
+        <div class="form-group">
+          <label class="form-label">Judul Modul</label>
+          <input type="text" id="adm-mod-title" class="form-control" placeholder="Misal: Anatomi Tubuh Manusia" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tingkatan Level</label>
+          <select id="adm-mod-level" class="form-control">
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+            <option value="Professional">Professional</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Kategori</label>
+          <input type="text" id="adm-mod-category" class="form-control" placeholder="Drawing" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Deskripsi Silabus</label>
+          <textarea id="adm-mod-desc" class="form-control" rows="3" placeholder="Jelaskan secara ringkas isi modul ini..." style="resize:none;" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 10px;">Simpan Modul</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ADMIN MANAGE LESSONS POPUP MODAL -->
+  <div class="modal-overlay" id="admin-lessons-modal">
+    <div class="card animate-fade" style="max-width: 800px; width: 100%; background: var(--bg-secondary);" onclick="event.stopPropagation()">
+      <div class="flex justify-between items-center" style="margin-bottom: 16px;">
+        <h3 id="admin-lessons-modal-title" style="font-size: 20px;">Kelola Materi / Lessons</h3>
+        <button onclick="closeAdminLessonsModal()" class="btn" style="background: transparent; color: var(--text-muted); font-size: 18px;">✕</button>
+      </div>
+      <div class="flex justify-between items-center" style="margin-bottom: 12px;">
+        <span style="color: var(--text-muted); font-size: 13px;" id="admin-lessons-modal-subtitle">Daftar materi pelajaran dalam modul ini.</span>
+        <button onclick="openAddLessonModal()" class="btn btn-primary" style="padding: 6px 12px; font-size: 12px;">➕ Tambah Materi</button>
+      </div>
+      <div style="max-height: 400px; overflow-y: auto;">
+        <table>
+          <thead>
+            <tr><th>No</th><th>Judul Materi</th><th>Video URL</th><th>Checklist Latihan</th><th>Aksi</th></tr>
+          </thead>
+          <tbody id="admin-lessons-table-body">
+            <!-- Dynamic list of lessons -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN ADD/EDIT LESSON FORM MODAL -->
+  <div class="modal-overlay" id="admin-lesson-form-modal">
+    <div class="card animate-fade" style="max-width: 500px; width: 100%; background: var(--bg-secondary);" onclick="event.stopPropagation()">
+      <div class="flex justify-between items-center" style="margin-bottom: 16px;">
+        <h3 id="admin-lesson-form-title" style="font-size: 20px;">Tambah Materi Pelajaran</h3>
+        <button onclick="closeAdminLessonFormModal()" class="btn" style="background: transparent; color: var(--text-muted); font-size: 18px;">✕</button>
+      </div>
+      <form onsubmit="handleAdminSaveLesson(event)" class="flex flex-col gap-4">
+        <div class="form-group">
+          <label class="form-label">Judul Materi</label>
+          <input type="text" id="adm-les-title" class="form-control" placeholder="Misal: Proporsi Wajah Manusia" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Urutan (Order No)</label>
+          <input type="number" id="adm-les-order" class="form-control" min="1" value="1" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tautan Video YouTube (Embed URL)</label>
+          <input type="text" id="adm-les-video" class="form-control" value="https://www.youtube.com/embed/dQw4w9WgXcQ" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Deskripsi & Instruksi Latihan</label>
+          <textarea id="adm-les-content" class="form-control" rows="3" placeholder="Masukkan materi teori dan petunjuk tugas..." style="resize:none;" required></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Checklist Latihan (Pisahkan dengan koma)</label>
+          <input type="text" id="adm-les-checklist" class="form-control" placeholder="Sketsa kasar proporsi wajah, Tambahkan arsir shading">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 10px;">Simpan Materi</button>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- ==========================================
+       JAVASCRIPT LOGIC
+       ========================================== -->
+  <script>
+    // Translation dictionary mappings
+    const translations = {
+      id: {
+        "nav-home": "Home",
+        "nav-modules": "Modul Seni",
+        "nav-portfolio": "Portofolio",
+        "nav-login": "Masuk",
+        "nav-register": "Mulai Belajar",
+        "hero-tag": "🌟 Platform Pembelajaran Seni #1",
+        "hero-title": "Kuasai Seni Lukis & Gambar dari Nol",
+        "hero-desc": "Belajar secara terstruktur dengan modul langkah demi langkah. Dapatkan koreksi visual dan feedback skor langsung dari mentor profesional berbasis rubrik penilaian terstandar.",
+        "btn-register-learner": "Daftar Akun Learner",
+        "btn-login-demo": "Akses Akun Demo",
+        "stat-modules": "Modul Seni Aktif",
+        "stat-students": "Siswa Bergabung",
+        "stat-reviewed": "Tugas Dinilai",
+        "stat-portfolio": "Karya Portofolio",
+        "benefits-title": "Keunggulan Studio Art Skills",
+        "benefits-subtitle": "Kami menyusun standar akademi agar latihan Anda membuahkan hasil nyata.",
+        "benefit-1-title": "Jalur Belajar Terarah",
+        "benefit-1-desc": "Setiap langkah didesain berurutan dari kontrol garis dasar, shading pencahayaan, hingga proyek akhir.",
+        "benefit-2-title": "Rubrik Evaluasi Mentor",
+        "benefit-2-desc": "Dapatkan skor terinci dari mentor pada aspek bentuk dasar, teknik arsir, komposisi warna, dan anatomi.",
+        "benefit-3-title": "Lencana & Sertifikasi",
+        "benefit-3-desc": "Selesaikan modul latihan dan raih badge eksklusif sebagai pencapaian atas skill menggambar Anda.",
+        "featured-modules-title": "Contoh Modul Belajar",
+        "featured-modules-subtitle": "Lihat kurikulum dasar yang dapat Anda pelajari segera.",
+        "btn-all-modules": "Semua Modul",
+        "faq-title": "Pertanyaan Umum",
+        "faq-1-q": "Apakah platform ini gratis untuk dicoba?",
+        "faq-1-a": "Ya! Anda dapat melihat silabus modul, membaca materi pelajaran demo, dan melihat galeri portofolio publik tanpa mendaftar akun.",
+        "faq-2-q": "Bagaimana mentor memberikan penilaian?",
+        "faq-2-a": "Setiap materi latihan dilengkapi dengan rubrik penilaian. Mentor akan memberikan poin skor (1-10) per kriteria, serta komentar feedback langsung pada karya Anda.",
+        "catalog-title": "Katalog Modul Seni",
+        "catalog-subtitle": "Telusuri silabus dan levels materi pelajaran dari dasar.",
+        "portfolio-title": "Galeri Portofolio Publik",
+        "portfolio-subtitle": "Karya lukis dan sketsa terbaik hasil karya siswa Studio Art Skills.",
+        "login-title": "Selamat Datang",
+        "login-subtitle": "Silakan masuk menggunakan kredensial demo di sebelah kanan.",
+        "label-email": "Email",
+        "label-password": "Password",
+        "btn-submit-login": "Masuk ke Platform",
+        "demo-title": "Akses Akun Demo Instan",
+        "demo-subtitle": "Klik salah satu tombol untuk langsung menguji sistem dengan peran tertentu:",
+        "register-title": "Daftar Akun Siswa",
+        "register-subtitle": "Mulai latihan seni terstruktur Anda hari ini.",
+        "label-name": "Nama Lengkap",
+        "btn-submit-register": "Buat Akun Siswa",
+        "btn-logout": "Keluar",
+        "dash-welcome": "Selamat Latihan! 🎨",
+        "dash-subtitle": "Centang checklist di materi belajar lalu unggah karya terbaik Anda untuk dinilai mentor.",
+        "dash-modules-title": "📖 Modul Aktif Anda",
+        "dash-tasks-title": "✔️ Tugas / Latihan Hari Ini",
+        "task-1-mock": "Latihan Kontrol Garis (Fundamental Drawing)",
+        "task-2-mock": "Latihan 9-Value Scale (Shading & Light)",
+        "task-3-mock": "Upload Karya pertama ke Portofolio Digital",
+        "dash-badges-title": "🏅 Lencana Tercapai",
+        "view-modules-title": "Modul Kurikulum Seni",
+        "view-modules-subtitle": "Silakan pilih modul di bawah untuk memulai pembelajaran terstruktur.",
+        "btn-back-catalog": "⬅️ Kembali ke Katalog",
+        "md-progress-label": "Progres Kurikulum:",
+        "md-lessons-title": "Daftar Pelajaran / Lesson",
+        "btn-back-outline": "⬅️ Kembali ke Outline Modul",
+        "les-checklist-title": "✔️ Checklist Latihan",
+        "les-upload-title": "📤 Kumpulkan Karya Seni",
+        "mentor-panel-title": "Panel Koreksi Mentor",
+        "port-title-workspace": "Portofolio Digital",
+        "port-subtitle-workspace": "Karya seni terunggul hasil latihan belajar Anda.",
+        "btn-upload-portfolio": "Unggah Karya Baru",
+        "lightbox-tag": "Karya Portofolio",
+        "lightbox-process-label": "Refleksi & Catatan Proses:",
+        "btn-close": "Tutup Galeri",
+        "up-modal-title": "Unggah Karya Seni Baru",
+        "up-modal-label-title": "Judul Karya",
+        "up-modal-label-url": "URL Gambar (Demo Link)",
+        "up-modal-label-tags": "Tags / Kategori (Pisahkan dengan koma)",
+        "up-modal-label-reflection": "Catatan Refleksi & Proses",
+        "up-modal-btn-submit": "Simpan ke Portofolio"
+      },
+      en: {
+        "nav-home": "Home",
+        "nav-modules": "Art Modules",
+        "nav-portfolio": "Portfolio",
+        "nav-login": "Sign In",
+        "nav-register": "Start Learning",
+        "hero-tag": "🌟 #1 Art Learning Platform",
+        "hero-title": "Master Drawing & Painting from Scratch",
+        "hero-desc": "Learn systematically with step-by-step modules. Get visual feedback and scoring directly from professional mentors based on standardized rubrics.",
+        "btn-register-learner": "Register Learner Account",
+        "btn-login-demo": "Access Demo Accounts",
+        "stat-modules": "Active Art Modules",
+        "stat-students": "Joined Students",
+        "stat-reviewed": "Tasks Evaluated",
+        "stat-portfolio": "Portfolio Artworks",
+        "benefits-title": "Why Studio Art Skills?",
+        "benefits-subtitle": "We assemble academy standards to ensure your exercises yield real results.",
+        "benefit-1-title": "Guided Learning Path",
+        "benefit-1-desc": "Each step is designed sequentially from line control, shading light value, to final projects.",
+        "benefit-2-title": "Mentor Rubric Evaluation",
+        "benefit-2-desc": "Receive detailed score ratings from mentors on shapes, shading, compositions, and anatomy.",
+        "benefit-3-title": "Badges & Certificates",
+        "benefit-3-desc": "Complete lessons and earn exclusive badges representing your acquired drawing skills.",
+        "featured-modules-title": "Sample Learning Modules",
+        "featured-modules-subtitle": "Browse our core curriculum that you can start learning immediately.",
+        "btn-all-modules": "All Modules",
+        "faq-title": "Frequently Asked Questions",
+        "faq-1-q": "Is this platform free to try?",
+        "faq-1-a": "Yes! You can browse the syllabus, read demo lesson instructions, and view public galleries without an account.",
+        "faq-2-q": "How do mentors grade submissions?",
+        "faq-2-a": "Each task is graded based on a rubric. Mentors rate criteria from 1 to 10 and write corrective feedback.",
+        "catalog-title": "Art Modules Syllabus",
+        "catalog-subtitle": "Browse curriculum structures and lesson levels from beginner to advanced.",
+        "portfolio-title": "Public Art Gallery",
+        "portfolio-subtitle": "Stunning sketches and illustrations created by Studio Art Skills students.",
+        "login-title": "Welcome Back",
+        "login-subtitle": "Please log in using the demo credentials shown on the right.",
+        "label-email": "Email Address",
+        "label-password": "Password Key",
+        "btn-submit-login": "Sign In to Platform",
+        "demo-title": "Instant Demo Account Access",
+        "demo-subtitle": "Click any button to log in directly with the chosen system role:",
+        "register-title": "Create Student Account",
+        "register-subtitle": "Start your structural art practice path today.",
+        "label-name": "Full Name",
+        "btn-submit-register": "Create Account Now",
+        "btn-logout": "Sign Out",
+        "dash-welcome": "Happy Sketching! 🎨",
+        "dash-subtitle": "Complete your checklist items in lessons, then upload your artwork to get mentor feedback.",
+        "dash-modules-title": "📖 Your Active Modules",
+        "dash-tasks-title": "✔️ Daily Assignments Checklist",
+        "task-1-mock": "Line Control Practice (Fundamental Drawing)",
+        "task-2-mock": "9-Value Scale Shading (Shading & Light)",
+        "task-3-mock": "Upload first drawing to Digital Portfolio",
+        "dash-badges-title": "🏅 Earned Badges",
+        "view-modules-title": "Art Curriculum Syllabus",
+        "view-modules-subtitle": "Select any module below to start your structured learning journey.",
+        "btn-back-catalog": "⬅️ Back to Syllabus",
+        "md-progress-label": "Curriculum Progress:",
+        "md-lessons-title": "Lessons List",
+        "btn-back-outline": "⬅️ Back to Module Outline",
+        "les-checklist-title": "✔️ Exercises Checklist",
+        "les-upload-title": "📤 Submit Artwork",
+        "mentor-panel-title": "Mentor Review Workspace",
+        "port-title-workspace": "Digital Portfolio",
+        "port-subtitle-workspace": "Stunning showcase of your best verified artwork.",
+        "btn-upload-portfolio": "Upload New Work",
+        "lightbox-tag": "Portfolio Artwork",
+        "lightbox-process-label": "Reflection & Process Notes:",
+        "btn-close": "Close Gallery",
+        "up-modal-title": "Upload New Artwork",
+        "up-modal-label-title": "Artwork Title",
+        "up-modal-label-url": "Image URL (Demo Link)",
+        "up-modal-label-tags": "Tags / Categories (Comma separated)",
+        "up-modal-label-reflection": "Process Reflection Notes",
+        "up-modal-btn-submit": "Save to Portfolio"
+      }
+    };
+
+    let currentLang = 'id';
+
+    function toggleLanguage() {
+      currentLang = currentLang === 'id' ? 'en' : 'id';
+      updateLanguageUI();
+    }
+
+    function updateLanguageUI() {
+      // Loop elements with data-i18n attribute
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[currentLang] && translations[currentLang][key]) {
+          if (el.tagName === 'INPUT') {
+            el.placeholder = translations[currentLang][key];
+          } else {
+            el.innerHTML = translations[currentLang][key];
+          }
+        }
+      });
+
+      // Update languages button text
+      const btn = document.getElementById('lang-switch-btn');
+      if (btn) btn.innerText = currentLang === 'id' ? '🇬🇧 EN' : '🇮🇩 ID';
+
+      // Update sidebar indicator if visible
+      const sidebarIndicator = document.getElementById('sidebar-lang-indicator');
+      if (sidebarIndicator) sidebarIndicator.innerText = currentLang.toUpperCase();
+
+      // Re-run lists rendering
+      renderPublicFeaturedModules();
+      renderPublicPortfolio();
+      if (currentUser) {
+        enterWorkspace();
+      }
+    }
+
+    function getYouTubeEmbedUrl(url) {
+      if (!url) return '';
+      url = url.trim();
+
+      // If it is a full iframe HTML tag, extract the src attribute value
+      if (url.startsWith('<iframe') || url.includes('src=')) {
+        const match = url.match(/src=["']([^"']+)["']/);
+        if (match && match[1]) {
+          url = match[1];
+        }
+      }
+
+      if (url.includes('/embed/')) return url;
+
+      let videoId = '';
+      try {
+        if (url.includes('youtube.com/watch')) {
+          const urlParams = new URLSearchParams(new URL(url).search);
+          videoId = urlParams.get('v');
+        } else if (url.includes('youtu.be/')) {
+          videoId = url.split('youtu.be/')[1].split('?')[0];
+        } else if (url.includes('youtube.com/embed/')) {
+          videoId = url.split('youtube.com/embed/')[1].split('?')[0];
+        } else if (url.length === 11) {
+          // Plain video ID (11 chars)
+          videoId = url;
+        }
+      } catch (e) {
+        console.error("Failed to parse YouTube URL:", e);
+      }
+
+      if (videoId) {
+        return `https://www.youtube.com/embed/${videoId}`;
+      }
+      return url;
+    }
+
+    // State management
+    let currentUser = null;
+    let activeWorkspaceView = 'dashboard';
+    let adminActiveTab = 'modules';
+    let editingPortfolioId = null;
+    let editingAdminModuleId = null;
+    let editingSubmissionId = null;
+
+    // Database arrays (fallbacks)
+    const roles = {
+      GUEST: 'guest',
+      LEARNER: 'learner',
+      MENTOR: 'mentor',
+      ADMIN: 'admin'
+    };
+
+    const defaultUsers = [
+      { id: 'u1', name: 'Art Learner', email: 'learner@studioart.com', role: roles.LEARNER, avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80', bio: 'Belajar menggambar wajah & Still Life.' },
+      { id: 'u2', name: 'Master Mentor', email: 'mentor@studioart.com', role: roles.MENTOR, avatar_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80', bio: 'Ilustrator profesional.' },
+      { id: 'u3', name: 'Admin Utama', email: 'admin@studioart.com', role: roles.ADMIN, avatar_url: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80', bio: 'Sistem Admin.' }
+    ];
+
+    const defaultModules = [
+      { id: 'm1', title_id: 'Fundamental Drawing', title_en: 'Drawing Fundamentals', slug: 'fundamental-drawing', level: 'Beginner', category: 'Drawing', description_id: 'Pelajari dasar-dasar menggambar mulai dari kontrol garis kasar, konstruksi bentuk 3D, perspektif, dan proporsi dasar objek sehari-hari.', description_en: 'Learn drawing fundamentals including lines control, 3D shape constructions, perspective systems, and basic proportions of daily items.', thumbnail_url: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=600&q=80', is_published: true, order_no: 1, lesson_count: 2 },
+      { id: 'm2', title_id: 'Shading and Light', title_en: 'Light and Shading', slug: 'shading-and-light', level: 'Intermediate', category: 'Technique', description_id: 'Kuasai pencahayaan, value scale, rendering bayangan jatuh, highlight, dan cara memvisualisasikan volume serta kedalaman pada gambar.', description_en: 'Master lighting principles, value scales, cast shadows rendering, highlights, and volume visualization in drawing.', thumbnail_url: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?auto=format&fit=crop&w=600&q=80', is_published: true, order_no: 2, lesson_count: 2 },
+      { id: 'm3', title_id: 'Color and Composition', title_en: 'Color & Composition', slug: 'color-and-composition', level: 'Intermediate', category: 'Teori & Desain', description_id: 'Belajar tentang teori warna, harmoni warna, pembagian nilai focal point, kontras, dan bagaimana mendesain komposisi visual yang dinamis.', description_en: 'Learn color theory, harmony models, focal point value weight, contrast designs, and dynamic visual composition grids.', thumbnail_url: 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=600&q=80', is_published: true, order_no: 3, lesson_count: 0 }
+    ];
+
+    const defaultLessons = [
+      { id: 'l1', module_id: 'm1', title_id: 'Kontrol Garis dan Gambar Bentuk Dasar', title_en: 'Line Control and Basic Shapes Drawing', content_id: '<h2>Langkah Latihan</h2><p>1. Buat coretan garis lurus sejajar tanpa penggaris.<br>2. Gambar kubus dan bola 3D dengan memperhatikan kontur garis.</p>', content_en: '<h2>Exercise Steps</h2><p>1. Make parallel straight line strokes without a ruler.<br>2. Draw 3D cubes and spheres focusing on line weight contouring.</p>', video_url: 'https://www.youtube.com/embed/UOC8ISSbFx0', checklist_id: ['Latihan garis sejajar', 'Menggambar kubus 3D', 'Membuat kerucut perspektif'], checklist_en: ['Parallel lines exercise', 'Draw 3D cube', 'Perspective cone drawing'], order_no: 1 },
+      { id: 'l2', module_id: 'm1', title_id: 'Perspektif 2-Titik Hilang', title_en: '2-Point Perspective Systems', content_id: '<h2>Teori Perspektif 2-Titik</h2><p>Gunakan garis Horizon dan dua titik hilang di ujung kiri & kanan untuk menyusun kotak gedung jalanan miring.</p>', content_en: '<h2>2-Point Perspective Principles</h2><p>Apply Horizon cakrawala line and two separate vanishing points to align angled city block buildings.</p>', video_url: 'https://www.youtube.com/embed/pufj4-xgYE8', checklist_id: ['Garis Horizon & 2 Titik Hilang', 'Gedung utama kiri', 'Gedung utama kanan'], checklist_en: ['Horizon Line & 2 VP points', 'Left side building', 'Right side building'], order_no: 2 },
+      { id: 'l3', module_id: 'm2', title_id: 'Value Scale & Gradasi Cahaya', title_en: 'Value Scale & Soft Gradients', content_id: '<h2>Teori Value</h2><p>Buat arsiran gradasi halus berurutan dari putih ke hitam mutlak dalam 9 tingkat kotak.</p>', content_en: '<h2>Value Theory</h2><p>Create smooth hatching transitions from absolute white to dark values in a 9-step scale block.</p>', video_url: 'https://www.youtube.com/embed/dQw4w9WgXcQ', checklist_id: ['Value scale 9-tingkat', 'Gradasi arsir halus'], checklist_en: ['9-step value scale block', 'Smooth blending gradient'], order_no: 1 }
+    ];
+
+    const defaultSubmissions = [
+      { id: 's1', user_id: 'u1', user_name: 'Art Learner', lesson_id: 'l1', lesson_title: 'Kontrol Garis dan Gambar Bentuk Dasar', title: 'Sketsa Kubus dan Perspektif', file_url: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?auto=format&fit=crop&w=600&q=80', note: 'Saya rasa garis vertikal saya masih agak miring, namun kubus sudah sesuai perspektif.', status: 'reviewed', submitted_at: '2026-07-20T08:00:00Z', feedback: { score: 85, comment: 'Bagus sekali untuk pemula! Sedikit evaluasi pada kemiringan garis vertikal agar tegak lurus.', mentor_name: 'Master Mentor' } },
+      { id: 's2', user_id: 'u1', user_name: 'Art Learner', lesson_id: 'l2', lesson_title: 'Perspektif 2-Titik Hilang', title: 'Jalanan Kota Perspektif 2 Titik', file_url: 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=600&q=80', note: 'Susah meletakkan garis jendela agar selaras dengan titik hilang kanan.', status: 'submitted', submitted_at: '2026-07-22T10:00:00Z', feedback: null }
+    ];
+
+    const defaultPortfolio = [
+      { id: 'p1', user_id: 'u1', title: 'Kubus 3D dalam Ruang', image_url: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?auto=format&fit=crop&w=600&h=400&q=80', reflection: 'Mencoba rendering bentuk 3D pertama kali menggunakan pensil HB & 2B.', tags: ['Basic', 'Graphite'], is_featured: true, created_at: '2026-07-20T08:00:00Z' },
+      { id: 'p2', user_id: 'u1', title: 'Arsir Bola & Volume Sfera', image_url: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=600&h=400&q=80', reflection: 'Memahami core shadow dan reflected light agar bola terlihat bundar.', tags: ['Shading', 'Spherical'], is_featured: false, created_at: '2026-07-21T12:00:00Z' },
+      { id: 'p3', user_id: 'u1', title: 'Ilustrasi Kuliner Nusantara & Tradisi', image_url: 'assets/family_mie_ayam.jpg', reflection: 'Sebuah karya cat air bertema kuliner Mie Ayam dan mangkuk ayam jago legendaris, merefleksikan kehangatan makan bersama keluarga.', tags: ['Watercolor', 'Illustration'], is_featured: true, created_at: '2026-08-01T10:00:00Z' },
+      { id: 'p4', user_id: 'u1', title: 'Galeri Seni Studio Art Skills', image_url: 'assets/art_gallery.jpg', reflection: 'Pameran hasil karya kelulusan siswa Studio Art Skills di ruang pameran utama.', tags: ['Exhibition', 'Gallery'], is_featured: false, created_at: '2026-08-02T11:00:00Z' },
+      { id: 'p5', user_id: 'u1', title: 'Instalasi Seni Ikebana & Lukisan', image_url: 'assets/gallery_exhibition.jpg', reflection: 'Kolaborasi siswa merancang pajangan bunga Ikebana Jepang yang disandingkan dengan lukisan ekspresionis warna-warni.', tags: ['Exhibition', 'Installation'], is_featured: false, created_at: '2026-08-03T12:00:00Z' },
+      { id: 'p6', user_id: 'u1', title: 'Pameran Batik Wayang Raksasa', image_url: 'assets/batik_exhibition.jpg', reflection: 'Pembuatan kain batik motif pewayangan berukuran besar menggunakan teknik rintang lilin tradisional.', tags: ['Batik', 'Traditional'], is_featured: false, created_at: '2026-08-04T13:00:00Z' }
+    ];
+
+    // Array hooks filled by localStorage
+    let users = [];
+    let modules = [];
+    let lessons = [];
+    let submissions = [];
+    let portfolioItems = [];
+
+    // LocalStorage Sync Helpers
+    function saveToLocalStorage() {
+      localStorage.setItem('sas_users', JSON.stringify(users));
+      localStorage.setItem('sas_modules', JSON.stringify(modules));
+      localStorage.setItem('sas_lessons', JSON.stringify(lessons));
+      localStorage.setItem('sas_submissions', JSON.stringify(submissions));
+      localStorage.setItem('sas_portfolio', JSON.stringify(portfolioItems));
+    }
+
+    function loadFromLocalStorage() {
+      const savedUsers = localStorage.getItem('sas_users');
+      if (savedUsers) users = JSON.parse(savedUsers);
+      else users = [...defaultUsers];
+
+      const savedModules = localStorage.getItem('sas_modules');
+      if (savedModules) modules = JSON.parse(savedModules);
+      else modules = [...defaultModules];
+
+      const savedLessons = localStorage.getItem('sas_lessons');
+      if (savedLessons) {
+        lessons = JSON.parse(savedLessons);
+        // Force update default lessons to ensure they have the new real video URLs
+        defaultLessons.forEach(defaultLes => {
+          const activeLes = lessons.find(l => l.id === defaultLes.id);
+          if (activeLes) {
+            if (activeLes.video_url.includes('dQw4w9WgXcQ') || !activeLes.video_url) {
+              activeLes.video_url = defaultLes.video_url;
+            }
+          } else {
+            lessons.push(defaultLes);
+          }
+        });
+      } else {
+        lessons = [...defaultLessons];
+      }
+
+      const savedSubmissions = localStorage.getItem('sas_submissions');
+      if (savedSubmissions) submissions = JSON.parse(savedSubmissions);
+      else submissions = [...defaultSubmissions];
+
+      const savedPortfolio = localStorage.getItem('sas_portfolio');
+      if (savedPortfolio) {
+        portfolioItems = JSON.parse(savedPortfolio);
+        // Ensure new defaults are injected if not present
+        defaultPortfolio.forEach(item => {
+          if (!portfolioItems.some(p => p.id === item.id)) {
+            portfolioItems.push(item);
+          }
+        });
+      } else {
+        portfolioItems = [...defaultPortfolio];
+      }
+    }
+
+    // SERVER-SIDE CONFIG & SYNC INTERFACES
+    const API_BASE_URL = 'http://localhost:5000/api';
+    let isServerOnline = false;
+    let userToken = localStorage.getItem('sas_token') || '';
+
+    async function checkServerStatus() {
+      try {
+        const res = await fetch('http://localhost:5000/health');
+        if (res.ok) {
+          isServerOnline = true;
+          document.getElementById('db-status-badge').className = 'tag tag-gold';
+          document.getElementById('db-status-badge').innerText = '🌐 Cloud DB';
+          const sideBadge = document.getElementById('sidebar-db-status-badge');
+          if (sideBadge) {
+            sideBadge.className = 'tag tag-gold';
+            sideBadge.innerText = '🌐 Cloud DB';
+          }
+          console.log("Connected to server-side backend database.");
+          await syncDataFromServer();
+        } else {
+          throw new Error('Server not ready');
+        }
+      } catch (e) {
+        isServerOnline = false;
+        document.getElementById('db-status-badge').className = 'tag tag-blue';
+        document.getElementById('db-status-badge').innerText = '🔌 LocalStorage';
+        const sideBadge = document.getElementById('sidebar-db-status-badge');
+        if (sideBadge) {
+          sideBadge.className = 'tag tag-blue';
+          sideBadge.innerText = '🔌 LocalStorage';
+        }
+        console.warn("Backend server offline. Falling back to LocalStorage.");
+      }
+    }
+
+    async function syncDataFromServer() {
+      if (!isServerOnline) return;
+      try {
+        // Fetch modules
+        const modRes = await fetch('http://localhost:5000/api/public/modules');
+        const modData = await modRes.json();
+        if (modData.success) {
+          modules.length = 0;
+          modData.data.forEach(m => {
+            modules.push({
+              id: m.id,
+              title_id: m.title,
+              title_en: m.title,
+              slug: m.slug,
+              level: m.level,
+              category: m.category,
+              description_id: m.description,
+              description_en: m.description,
+              thumbnail_url: m.thumbnail_url || 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=600&h=400&q=80',
+              is_published: m.is_published,
+              order_no: m.order_no
+            });
+          });
+        }
+
+        // Fetch lessons
+        const lesRes = await fetch('http://localhost:5000/api/public/lessons');
+        const lesData = await lesRes.json();
+        if (lesData.success) {
+          lessons.length = 0;
+          lesData.data.forEach(l => {
+            lessons.push({
+              id: l.id,
+              module_id: l.module_id,
+              title_id: l.title,
+              title_en: l.title,
+              content_id: l.content,
+              content_en: l.content,
+              video_url: l.video_url || 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+              checklist_id: l.checklist_json || [],
+              checklist_en: l.checklist_json || [],
+              order_no: l.order_no
+            });
+          });
+        }
+
+        // Fetch submissions & portfolio if logged in
+        if (currentUser && userToken) {
+          const headers = { 'Authorization': `Bearer ${userToken}` };
+          
+          const portRes = await fetch('http://localhost:5000/api/portfolio', { headers });
+          const portData = await portRes.json();
+          if (portData.success) {
+            portfolioItems.length = 0;
+            portData.data.forEach(p => {
+              portfolioItems.push({
+                id: p.id,
+                user_id: p.user_id,
+                title: p.title,
+                image_url: p.image_url,
+                reflection: p.reflection,
+                tags: p.tags_json || [],
+                is_featured: p.is_featured,
+                created_at: p.created_at
+              });
+            });
+          }
+
+          const subRes = await fetch('http://localhost:5000/api/submissions', { headers });
+          const subData = await subRes.json();
+          if (subData.success) {
+            submissions.length = 0;
+            subData.data.forEach(s => {
+              submissions.push({
+                id: s.id,
+                user_id: s.user_id,
+                user_name: s.user_name,
+                lesson_id: s.lesson_id,
+                lesson_title: s.lesson_title,
+                title: s.title,
+                file_url: s.file_url,
+                note: s.note,
+                status: s.status,
+                submitted_at: s.submitted_at,
+                feedback: s.feedback ? {
+                  score: s.feedback.score,
+                  comment: s.feedback.comment,
+                  mentor_name: s.feedback.mentor_name
+                } : null
+              });
+            });
+          }
+        }
+      } catch (e) {
+        console.error("Failed to sync server-side data:", e);
+      }
+    }
+
+    // INITIALIZATION
+    window.onload = async function() {
+      loadFromLocalStorage();
+      saveToLocalStorage(); // Back-fill if empty
+      await checkServerStatus();
+      renderPublicFeaturedModules();
+      renderPublicPortfolio();
+      updateLanguageUI();
+    };
+
+    function showSection(sectionId) {
+      document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
+      document.getElementById('auth-workspace-frame').style.display = 'none';
+      document.getElementById('public-header').style.display = 'block';
+
+      const target = document.getElementById('sec-' + sectionId);
+      if (target) target.style.display = 'block';
+
+      if (sectionId === 'public-modules') renderPublicCatalog();
+      if (sectionId === 'public-portfolio') renderPublicPortfolioPage();
+    }
+
+    function showWorkspaceView(viewId) {
+      activeWorkspaceView = viewId;
+      document.querySelectorAll('.view-pane').forEach(v => v.style.display = 'none');
+      const target = document.getElementById('view-' + viewId);
+      if (target) target.style.display = 'block';
+
+      document.querySelectorAll('.sidebar-link').forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('onclick').includes(viewId)) {
+          link.classList.add('active');
+        }
+      });
+
+      if (viewId === 'dashboard') renderLearnerDashboard();
+      if (viewId === 'modules') renderWorkspaceModules();
+      if (viewId === 'feedback') renderFeedbackView();
+      if (viewId === 'portfolio') renderPortfolioView();
+      if (viewId === 'admin') renderAdminDashboard();
+    }
+
+    // AUTH ACTIONS
+    function quickLogin(role) {
+      const email = role + '@studioart.com';
+      document.getElementById('login-email').value = email;
+      handleLoginSubmit({ preventDefault: () => {} });
+    }
+
+    async function handleLoginSubmit(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const password = 'password123';
+
+      if (isServerOnline) {
+        try {
+          const res = await fetch('http://localhost:5000/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+          });
+          const result = await res.json();
+          if (result.success) {
+            currentUser = result.data.user;
+            userToken = result.data.token;
+            localStorage.setItem('sas_token', userToken);
+            await syncDataFromServer();
+            enterWorkspace();
+            return;
+          } else {
+            alert(result.message);
+            return;
+          }
+        } catch (err) {
+          console.error("Server login failed, falling back to offline", err);
+        }
+      }
+
+      const user = users.find(u => u.email === email);
+      if (!user) {
+        alert('Email tidak ditemukan! Gunakan learner@studioart.com, mentor@studioart.com, atau admin@studioart.com');
+        return;
+      }
+
+      currentUser = user;
+      enterWorkspace();
+    }
+
+    async function handleRegisterSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('reg-name').value;
+      const email = document.getElementById('reg-email').value;
+      const password = 'password123';
+
+      if (isServerOnline) {
+        try {
+          const res = await fetch('http://localhost:5000/api/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, password })
+          });
+          const result = await res.json();
+          if (result.success) {
+            currentUser = result.data.user;
+            userToken = result.data.token;
+            localStorage.setItem('sas_token', userToken);
+            await syncDataFromServer();
+            enterWorkspace();
+            return;
+          } else {
+            alert(result.message);
+            return;
+          }
+        } catch (err) {
+          console.error("Server registration failed", err);
+        }
+      }
+
+      const newUser = {
+        id: 'u_' + Date.now(),
+        name,
+        email,
+        role: roles.LEARNER,
+        avatar_url: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80',
+        bio: 'Art Learner baru'
+      };
+
+      users.push(newUser);
+      saveToLocalStorage();
+      currentUser = newUser;
+      enterWorkspace();
+    }
+
+    function enterWorkspace() {
+      document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
+      document.getElementById('public-header').style.display = 'none';
+      
+      document.getElementById('auth-workspace-frame').style.display = 'block';
+      document.getElementById('sidebar-name').innerText = currentUser.name;
+      document.getElementById('sidebar-avatar').src = currentUser.avatar_url;
+      document.getElementById('sidebar-role-badge').innerText = currentUser.role;
+
+      const menuContainer = document.getElementById('sidebar-menu-links');
+      menuContainer.innerHTML = '';
+
+      if (currentUser.role === roles.LEARNER) {
+        menuContainer.innerHTML = `
+          <a href="#" onclick="showWorkspaceView('dashboard')" class="sidebar-link active">📊 ${currentLang === 'id' ? 'Dashboard Siswa' : 'Student Dashboard'}</a>
+          <a href="#" onclick="showWorkspaceView('modules')" class="sidebar-link">📚 ${currentLang === 'id' ? 'Modul Belajar' : 'Art Modules'}</a>
+          <a href="#" onclick="showWorkspaceView('feedback')" class="sidebar-link">🏅 ${currentLang === 'id' ? 'Feedback & Skor' : 'Feedback & Scores'}</a>
+          <a href="#" onclick="showWorkspaceView('portfolio')" class="sidebar-link">💼 ${currentLang === 'id' ? 'Portofolio Saya' : 'My Portfolio'}</a>
+        `;
+        showWorkspaceView('dashboard');
+      } else if (currentUser.role === roles.MENTOR) {
+        menuContainer.innerHTML = `
+          <a href="#" onclick="showWorkspaceView('feedback')" class="sidebar-link active">🧐 ${currentLang === 'id' ? 'Evaluasi Tugas' : 'Grade Submissions'}</a>
+          <a href="#" onclick="showWorkspaceView('modules')" class="sidebar-link">📚 ${currentLang === 'id' ? 'Modul Pelajaran' : 'Art Modules'}</a>
+          <a href="#" onclick="showWorkspaceView('portfolio')" class="sidebar-link">🖼️ ${currentLang === 'id' ? 'Galeri Portofolio' : 'Portfolio Gallery'}</a>
+        `;
+        showWorkspaceView('feedback');
+      } else if (currentUser.role === roles.ADMIN) {
+        menuContainer.innerHTML = `
+          <a href="#" onclick="showWorkspaceView('admin')" class="sidebar-link active">⚙️ ${currentLang === 'id' ? 'Admin Dashboard' : 'Admin Dashboard'}</a>
+          <a href="#" onclick="showWorkspaceView('modules')" class="sidebar-link">📚 ${currentLang === 'id' ? 'Kelola Modul' : 'Manage Modules'}</a>
+          <a href="#" onclick="showWorkspaceView('portfolio')" class="sidebar-link">🖼️ ${currentLang === 'id' ? 'Galeri Portofolio' : 'Portfolio Gallery'}</a>
+        `;
+        showWorkspaceView('admin');
+      }
+    }
+
+    function logout() {
+      currentUser = null;
+      userToken = '';
+      localStorage.removeItem('sas_token');
+      const badge = document.getElementById('sidebar-db-status-badge');
+      if (badge) {
+        badge.className = 'tag tag-blue';
+        badge.innerText = '🔌 LocalStorage';
+      }
+      showSection('home-public');
+    }
+
+    // HOME PUBLIC RENDERERS
+    function renderPublicFeaturedModules() {
+      const container = document.getElementById('featured-modules-container');
+      if (!container) return;
+      container.innerHTML = '';
+      modules.slice(0, 3).forEach(mod => {
+        const title = currentLang === 'id' ? mod.title_id : mod.title_en;
+        const desc = currentLang === 'id' ? mod.description_id : mod.description_en;
+        const btnText = currentLang === 'id' ? 'Mulai Belajar' : 'Start Learning';
+        
+        container.innerHTML += `
+          <div class="card card-hover flex flex-col justify-between" style="padding:0; overflow:hidden;">
+            <img src="${mod.thumbnail_url}" style="width:100%; height:160px; object-fit:cover;">
+            <div style="padding:20px;">
+              <span class="tag tag-cyan" style="margin-bottom:8px; display:inline-block;">${mod.level}</span>
+              <h3 style="font-size:17px; margin-bottom:8px;">${title}</h3>
+              <p style="color:var(--text-secondary); font-size:13px; height:60px; overflow:hidden;">${desc}</p>
+            </div>
+            <div style="padding:0 20px 20px 20px;">
+              <button onclick="showSection('login')" class="btn btn-outline" style="width:100%;">${btnText}</button>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function renderPublicPortfolio() {
+      const list = document.getElementById('public-portfolio-list');
+      if (!list) return;
+      list.innerHTML = '';
+      portfolioItems.forEach(item => {
+        list.innerHTML += `
+          <div class="card card-hover" style="padding:0; overflow:hidden;" onclick="openLightbox(${JSON.stringify(item).replace(/"/g, '&quot;')})">
+            <img src="${item.image_url}" style="width:100%; height:180px; object-fit:cover;">
+            <div style="padding:16px;">
+              <h4 style="font-size:16px; margin-bottom:6px;">${item.title}</h4>
+              <p style="color:var(--text-secondary); font-size:12.5px; height:40px; overflow:hidden;">"${item.reflection}"</p>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function renderPublicPortfolioPage() {
+      renderPublicPortfolio();
+    }
+
+    function renderPublicCatalog() {
+      const container = document.getElementById('public-modules-list');
+      container.innerHTML = '';
+      modules.forEach(mod => {
+        const title = currentLang === 'id' ? mod.title_id : mod.title_en;
+        const desc = currentLang === 'id' ? mod.description_id : mod.description_en;
+        const btnText = currentLang === 'id' ? 'Masuk untuk Belajar' : 'Log In to Learn';
+
+        container.innerHTML += `
+          <div class="card card-hover flex flex-col justify-between" style="padding:0; overflow:hidden;">
+            <img src="${mod.thumbnail_url}" style="width:100%; height:160px; object-fit:cover;">
+            <div style="padding:20px;">
+              <span class="tag tag-cyan" style="margin-bottom:8px; display:inline-block;">${mod.level}</span>
+              <h3 style="font-size:17px; margin-bottom:8px;">${title}</h3>
+              <p style="color:var(--text-secondary); font-size:13px; height:60px; overflow:hidden;">${desc}</p>
+            </div>
+            <div style="padding:0 20px 20px 20px;">
+              <button onclick="showSection('login')" class="btn btn-primary" style="width:100%;">${btnText}</button>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    // LEARNER DASHBOARD RENDERER
+    function renderLearnerDashboard() {
+      const container = document.getElementById('learner-active-modules');
+      container.innerHTML = '';
+      const btnText = currentLang === 'id' ? 'Lanjut' : 'Resume';
+      
+      modules.slice(0, 2).forEach(mod => {
+        const percent = mod.id === 'm1' ? 100 : 50;
+        const title = currentLang === 'id' ? mod.title_id : mod.title_en;
+        container.innerHTML += `
+          <div class="card flex justify-between items-center" style="padding:16px;">
+            <div class="flex items-center gap-4" style="flex-grow:1;">
+              <img src="${mod.thumbnail_url}" style="width:60px; height:45px; border-radius:4px; object-fit:cover;">
+              <div style="flex-grow:1; max-width: 75%;">
+                <h4 style="font-size:14.5px; font-weight:700;">${title}</h4>
+                <div style="margin-top:6px;" class="progress-container">
+                  <div class="progress-fill" style="width:${percent}%;"></div>
+                </div>
+              </div>
+            </div>
+            <button onclick="viewModuleDetails('${mod.id}')" class="btn btn-secondary" style="padding:6px 12px; font-size:12px;">
+              ${btnText}
+            </button>
+          </div>
+        `;
+      });
+
+      // Badges
+      const badgeGrid = document.getElementById('learner-badges-grid');
+      badgeGrid.innerHTML = '';
+      badges.forEach(b => {
+        badgeGrid.innerHTML += `
+          <div class="badge-item earned" style="padding:10px;">
+            <div style="font-size:26px;">${b.icon_url}</div>
+            <div style="font-size:11px; font-weight:bold;">${b.name}</div>
+          </div>
+        `;
+      });
+    }
+
+    // MODULE CATALOG & DETAILS
+    function renderWorkspaceModules() {
+      const container = document.getElementById('workspace-modules-list');
+      container.innerHTML = '';
+      const btnText = currentLang === 'id' ? 'Lihat Pelajaran' : 'View Lessons';
+
+      modules.forEach(mod => {
+        const title = currentLang === 'id' ? mod.title_id : mod.title_en;
+        const desc = currentLang === 'id' ? mod.description_id : mod.description_en;
+        
+        container.innerHTML += `
+          <div class="card card-hover flex flex-col justify-between" style="padding:0; overflow:hidden;">
+            <img src="${mod.thumbnail_url}" style="width:100%; height:150px; object-fit:cover;">
+            <div style="padding:20px;">
+              <span class="tag tag-cyan" style="margin-bottom:6px; display:inline-block;">${mod.level}</span>
+              <h3 style="font-size:16px; margin-bottom:6px;">${title}</h3>
+              <p style="color:var(--text-secondary); font-size:12.5px; height:55px; overflow:hidden;">${desc}</p>
+            </div>
+            <div style="padding:0 20px 20px 20px;">
+              <button onclick="viewModuleDetails('${mod.id}')" class="btn btn-outline" style="width:100%; padding:8px 12px; font-size:13px;">${btnText}</button>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    let activeModuleId = null;
+    function viewModuleDetails(moduleId) {
+      activeModuleId = moduleId;
+      const mod = modules.find(m => m.id === moduleId);
+      
+      const title = currentLang === 'id' ? mod.title_id : mod.title_en;
+      const desc = currentLang === 'id' ? mod.description_id : mod.description_en;
+
+      document.getElementById('md-title').innerText = title;
+      document.getElementById('md-desc').innerText = desc;
+      document.getElementById('md-level').innerText = mod.level;
+      
+      const modLessons = lessons.filter(l => l.module_id === moduleId);
+      const list = document.getElementById('module-lessons-list');
+      list.innerHTML = '';
+      
+      const btnStartText = currentLang === 'id' ? 'Mulai' : 'Start';
+
+      if (modLessons.length > 0) {
+        modLessons.forEach((les, idx) => {
+          const lesTitle = currentLang === 'id' ? les.title_id : les.title_en;
+          list.innerHTML += `
+            <div class="card" style="padding:14px; background:rgba(19, 27, 46, 0.4);">
+              <div class="flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                  <div style="width:24px; height:24px; border-radius:50%; background:var(--bg-tertiary); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:bold;">
+                    ${idx+1}
+                  </div>
+                  <h4 style="font-size:14.5px;">${lesTitle}</h4>
+                </div>
+                <button onclick="startLesson('${les.id}')" class="btn btn-primary" style="padding:6px 14px; font-size:12px;">${btnStartText}</button>
+              </div>
+            </div>
+          `;
+        });
+      } else {
+        list.innerHTML = `<div class="card" style="text-align:center; color:var(--text-muted); padding:20px;">${currentLang === 'id' ? 'Belum ada materi pelajaran.' : 'No lessons available yet.'}</div>`;
+      }
+
+      showWorkspaceView('module-detail');
+    }
+
+    // LESSON PLAYER & UPLOADS
+    let activeLessonId = null;
+    function startLesson(lessonId) {
+      activeLessonId = lessonId;
+      const les = lessons.find(l => l.id === lessonId);
+      
+      const title = currentLang === 'id' ? les.title_id : les.title_en;
+      const content = currentLang === 'id' ? les.content_id : les.content_en;
+
+      document.getElementById('les-title').innerText = title;
+      document.getElementById('les-video').src = getYouTubeEmbedUrl(les.video_url);
+      document.getElementById('les-content').innerHTML = content;
+      document.getElementById('les-order-tag').innerText = `${currentLang === 'id' ? 'Pelajaran' : 'Lesson'} #${les.order_no}`;
+
+      const chkContainer = document.getElementById('les-checklist-container');
+      chkContainer.innerHTML = '';
+      const checklistItems = currentLang === 'id' ? les.checklist_id : les.checklist_en;
+      checklistItems.forEach(item => {
+        chkContainer.innerHTML += `
+          <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text-secondary); cursor:pointer;">
+            <input type="checkbox" style="width:16px; height:16px;">
+            <span>${item}</span>
+          </label>
+        `;
+      });
+
+      renderLessonUploadSection();
+      showWorkspaceView('lesson');
+    }
+
+    function renderLessonUploadSection() {
+      const uploadContainer = document.getElementById('les-upload-section');
+      const sub = submissions.find(s => s.lesson_id === activeLessonId && s.user_id === currentUser.id);
+
+      if (sub) {
+        const isReviewed = sub.status === 'reviewed';
+        uploadContainer.innerHTML = `
+          <div style="background:rgba(255,255,255,0.02); border:1px solid var(--glass-border); padding:12px; border-radius:6px; margin-bottom:12px;">
+            <img src="${sub.file_url}" style="width:100%; height:110px; object-fit:cover; border-radius:4px; margin-bottom:8px;">
+            <div style="font-size:13px; font-weight:700; color:var(--text-primary);">${sub.title}</div>
+            <div style="margin-top:6px;">
+              ${isReviewed ? `
+                <span class="tag tag-gold">${currentLang === 'id' ? '⭐ Nilai' : '⭐ Grade'}: ${sub.feedback.score}/100</span>
+                <p style="font-size:12px; color:var(--text-secondary); margin-top:6px; border-left:3px solid var(--reward-gold); padding-left:6px; font-style:italic;">
+                  "${sub.feedback.comment}"
+                </p>
+              ` : `
+                <span class="tag tag-blue">${currentLang === 'id' ? '⏳ Sedang Ditinjau' : '⏳ Pending Review'}</span>
+                <div class="flex gap-2" style="margin-top:10px;">
+                  <button onclick="editSubmission('${sub.id}')" class="btn btn-secondary" style="padding:4px 8px; font-size:11px; flex-grow:1;">✏️ Edit</button>
+                  <button onclick="deleteSubmission('${sub.id}')" class="btn" style="padding:4px 8px; font-size:11px; color:var(--error); background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.2); flex-grow:1;">🗑️ Hapus</button>
+                </div>
+              `}
+            </div>
+          </div>
+        `;
+      } else {
+        uploadContainer.innerHTML = `
+          <form onsubmit="handleLessonUploadSubmit(event)" class="flex flex-col gap-3">
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label">${currentLang === 'id' ? 'Judul Karya' : 'Artwork Title'}</label>
+              <input type="text" id="les-up-title" class="form-control" placeholder="${currentLang === 'id' ? 'Misal: Kubus 3D Saya' : 'E.g. My 3D Cube'}" required style="padding:8px 12px; font-size:13px;">
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label">${currentLang === 'id' ? 'Tautan Karya (Demo URL)' : 'Artwork URL (Demo Link)'}</label>
+              <input type="text" id="les-up-url" class="form-control" value="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?auto=format&fit=crop&w=600&h=400&q=80" required style="padding:8px 12px; font-size:13px;">
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label">${currentLang === 'id' ? 'Catatan Proses' : 'Process Notes'}</label>
+              <textarea id="les-up-note" class="form-control" rows="2" placeholder="${currentLang === 'id' ? 'Bagikan kesulitan Anda...' : 'Share your challenges...'}" style="padding:8px 12px; font-size:13px; resize:none;"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%; padding:8px; font-size:13px;">${currentLang === 'id' ? 'Kumpulkan Karya' : 'Submit Artwork'}</button>
+          </form>
+        `;
+      }
+    }
+
+    function editSubmission(subId) {
+      const sub = submissions.find(s => s.id === subId);
+      if (!sub) return;
+      editingSubmissionId = subId;
+
+      const uploadContainer = document.getElementById('les-upload-section');
+      uploadContainer.innerHTML = `
+        <form onsubmit="handleLessonUploadSubmit(event)" class="flex flex-col gap-3">
+          <div class="form-group" style="margin-bottom:0;">
+            <label class="form-label">${currentLang === 'id' ? 'Edit Judul Karya' : 'Edit Artwork Title'}</label>
+            <input type="text" id="les-up-title" class="form-control" value="${sub.title}" required style="padding:8px 12px; font-size:13px;">
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label class="form-label">${currentLang === 'id' ? 'Edit Tautan Karya' : 'Edit Artwork URL'}</label>
+            <input type="text" id="les-up-url" class="form-control" value="${sub.file_url}" required style="padding:8px 12px; font-size:13px;">
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label class="form-label">${currentLang === 'id' ? 'Edit Catatan Proses' : 'Edit Process Notes'}</label>
+            <textarea id="les-up-note" class="form-control" rows="2" style="padding:8px 12px; font-size:13px; resize:none;">${sub.note || ''}</textarea>
+          </div>
+          <div class="flex gap-2">
+            <button type="submit" class="btn btn-primary" style="flex-grow:1; padding:8px; font-size:13px;">${currentLang === 'id' ? 'Simpan' : 'Save'}</button>
+            <button type="button" onclick="renderLessonUploadSection()" class="btn btn-secondary" style="padding:8px; font-size:13px;">${currentLang === 'id' ? 'Batal' : 'Cancel'}</button>
+          </div>
+        </form>
+      `;
+    }
+
+    async function deleteSubmission(subId) {
+      if (confirm(currentLang === 'id' ? 'Yakin ingin menghapus pengumpulan tugas ini?' : 'Are you sure you want to delete this submission?')) {
+        if (isServerOnline) {
+          const headers = { 'Authorization': `Bearer ${userToken}` };
+          try {
+            const res = await fetch(`http://localhost:5000/api/submissions/${subId}`, {
+              method: 'DELETE',
+              headers
+            });
+            const result = await res.json();
+            if (result.success) {
+              await syncDataFromServer();
+              renderLessonUploadSection();
+              return;
+            }
+          } catch (err) {
+            console.error("Server delete submission failed", err);
+          }
+        }
+
+        // Fallback
+        const filtered = submissions.filter(s => s.id !== subId);
+        submissions.length = 0;
+        submissions.push(...filtered);
+        saveToLocalStorage();
+        renderLessonUploadSection();
+        alert(currentLang === 'id' ? 'Pengumpulan berhasil dihapus.' : 'Submission successfully deleted.');
+      }
+    }
+
+    async function handleLessonUploadSubmit(e) {
+      e.preventDefault();
+      const title = document.getElementById('les-up-title').value;
+      const fileUrl = document.getElementById('les-up-url').value;
+      const note = document.getElementById('les-up-note').value;
+      const les = lessons.find(l => l.id === activeLessonId);
+      const lesTitle = currentLang === 'id' ? les.title_id : les.title_en;
+
+      if (isServerOnline) {
+        const headers = { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${userToken}` 
+        };
+        try {
+          let res;
+          if (editingSubmissionId) {
+            res = await fetch(`http://localhost:5000/api/submissions/${editingSubmissionId}`, {
+              method: 'PUT',
+              headers,
+              body: JSON.stringify({ title, fileUrl, note })
+            });
+          } else {
+            res = await fetch('http://localhost:5000/api/submissions', {
+              method: 'POST',
+              headers,
+              body: JSON.stringify({ lessonId: activeLessonId, title, fileUrl, note })
+            });
+          }
+          const result = await res.json();
+          if (result.success) {
+            alert(currentLang === 'id' ? 'Tugas disimpan ke server!' : 'Task saved to server!');
+            await syncDataFromServer();
+            editingSubmissionId = null;
+            renderLessonUploadSection();
+            return;
+          }
+        } catch (err) {
+          console.error("Server upload failed", err);
+        }
+      }
+
+      // Fallback
+      if (editingSubmissionId) {
+        const idx = submissions.findIndex(s => s.id === editingSubmissionId);
+        if (idx !== -1) {
+          submissions[idx].title = title;
+          submissions[idx].file_url = fileUrl;
+          submissions[idx].note = note;
+        }
+        editingSubmissionId = null;
+        alert(currentLang === 'id' ? 'Perubahan pengumpulan tugas berhasil disimpan!' : 'Submission changes successfully saved!');
+      } else {
+        const newSub = {
+          id: 's_' + Date.now(),
+          user_id: currentUser.id,
+          user_name: currentUser.name,
+          lesson_id: activeLessonId,
+          lesson_title: lesTitle,
+          title,
+          file_url: fileUrl,
+          note,
+          status: 'submitted',
+          submitted_at: new Date().toISOString(),
+          feedback: null
+        };
+        submissions.push(newSub);
+        portfolioItems.push({
+          id: 'p_' + Date.now(),
+          user_id: currentUser.id,
+          title,
+          image_url: fileUrl,
+          reflection: note,
+          tags: ['Exercise', 'Sketch'],
+          is_featured: false,
+          created_at: new Date().toISOString()
+        });
+        alert(currentLang === 'id' ? 'Tugas karya seni berhasil dikirim!' : 'Artwork successfully submitted!');
+      }
+
+      saveToLocalStorage();
+      renderLessonUploadSection();
+    }
+
+    // FEEDBACK & SCORING VIEWS
+    let mentorActiveReviewSub = null;
+    function renderFeedbackView() {
+      document.getElementById('feedback-view-title').innerText = currentUser.role === roles.MENTOR 
+        ? (currentLang === 'id' ? 'Evaluasi Kiriman Tugas Siswa' : 'Evaluate Student Submissions') 
+        : (currentLang === 'id' ? 'Daftar Feedback Karya Saya' : 'My Artwork Reviews');
+      
+      const grid = document.getElementById('feedback-submissions-grid');
+      grid.innerHTML = '';
+      
+      const subs = currentUser.role === roles.MENTOR ? submissions : submissions.filter(s => s.user_id === currentUser.id);
+
+      if (subs.length > 0) {
+        subs.forEach(sub => {
+          const isReviewed = sub.status === 'reviewed';
+          const btnActionText = currentUser.role === roles.MENTOR && !isReviewed 
+            ? (currentLang === 'id' ? 'Beri Nilai & Feedback' : 'Grade & Feedback') 
+            : (currentLang === 'id' ? 'Lihat Pelajaran' : 'View Lesson');
+            
+          grid.innerHTML += `
+            <div class="card flex flex-col justify-between" style="padding:16px;">
+              <div>
+                <img src="${sub.file_url}" style="width:100%; height:120px; object-fit:cover; border-radius:6px; margin-bottom:12px;">
+                <span class="tag ${isReviewed ? 'tag-gold' : 'tag-blue'}" style="font-size:10px; margin-bottom:6px; display:inline-block;">
+                  ${isReviewed ? `⭐ ${sub.feedback.score}/100` : (currentLang === 'id' ? '⏳ Pending' : '⏳ Pending')}
+                </span>
+                <h4 style="font-size:15px; margin-bottom:4px;">${sub.title}</h4>
+                <p style="color:var(--text-muted); font-size:11px;">${currentLang === 'id' ? 'Materi' : 'Lesson'}: ${sub.lesson_title}</p>
+                ${isReviewed ? `
+                  <div style="background:rgba(255,255,255,0.02); padding:8px; border-radius:6px; margin-top:10px; border-left:2px solid var(--reward-gold); font-size:12px;">
+                    <strong>Mentor:</strong> "${sub.feedback.comment}"
+                  </div>
+                ` : ''}
+              </div>
+              
+              <div style="margin-top:14px;">
+                ${currentUser.role === roles.MENTOR && !isReviewed ? `
+                  <button onclick="openMentorScoring('${sub.id}')" class="btn btn-primary" style="width:100%; padding:8px; font-size:12px;">${btnActionText}</button>
+                ` : `
+                  <button onclick="startLesson('${sub.lesson_id}')" class="btn btn-secondary" style="width:100%; padding:8px; font-size:12px;">${btnActionText}</button>
+                `}
+              </div>
+            </div>
+          `;
+        });
+      } else {
+        grid.innerHTML = `<div class="card" style="grid-column: span 2; text-align:center; padding:40px; color:var(--text-muted);">${currentLang === 'id' ? 'Belum ada tugas kumpul.' : 'No submissions yet.'}</div>`;
+      }
+
+      const panel = document.getElementById('mentor-scoring-card');
+      if (currentUser.role !== roles.MENTOR || window.innerWidth < 768) {
+        if (currentUser.role !== roles.MENTOR) {
+          panel.style.display = 'none';
+        } else {
+          panel.style.display = 'block';
+        }
+        document.getElementById('feedback-mentor-container').style.gridTemplateColumns = '1fr';
+      } else {
+        panel.style.display = 'block';
+        document.getElementById('feedback-mentor-container').style.gridTemplateColumns = '2fr 1fr';
+        renderMentorScoringPlaceholder();
+      }
+    }
+
+    function renderMentorScoringPlaceholder() {
+      document.getElementById('mentor-scoring-card').innerHTML = `
+        <div style="text-align:center; color:var(--text-muted); font-size:13px; padding:20px;">
+          ${currentLang === 'id' 
+            ? 'Silakan pilih tombol "Beri Nilai" pada salah satu tugas pending di daftar kiri.' 
+            : 'Please click "Grade & Feedback" button on a pending task in the left list.'}
+        </div>
+      `;
+    }
+
+    function openMentorScoring(subId) {
+      const sub = submissions.find(s => s.id === subId);
+      mentorActiveReviewSub = sub;
+
+      const card = document.getElementById('mentor-scoring-card');
+      card.innerHTML = `
+        <h4 style="font-size:15px; margin-bottom:12px;">${currentLang === 'id' ? 'Koreksi' : 'Review'}: ${sub.title}</h4>
+        <div style="background:rgba(255,255,255,0.02); padding:10px; border-radius:6px; font-size:12px; margin-bottom:16px;">
+          <strong>Siswa:</strong> "${sub.note || 'Tidak ada catatan.'}"
+        </div>
+
+        <form onsubmit="handleMentorScoringSubmit(event)" class="flex flex-col gap-4">
+          <div>
+            <label class="form-label" style="font-size:12px;">${currentLang === 'id' ? 'Akurasi Garis' : 'Line Accuracy'} (1 - 10)</label>
+            <input type="range" id="rubric-1" min="1" max="10" value="8" style="width:100%; accent-color:var(--accent-cyan);">
+          </div>
+          <div>
+            <label class="form-label" style="font-size:12px;">${currentLang === 'id' ? 'Struktur Bentuk 3D' : '3D Form & Structure'} (1 - 10)</label>
+            <input type="range" id="rubric-2" min="1" max="10" value="7" style="width:100%; accent-color:var(--accent-cyan);">
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label class="form-label" style="font-size:12px;">${currentLang === 'id' ? 'Komentar Masukan' : 'Feedback Comments'}</label>
+            <textarea id="mentor-comment" class="form-control" rows="3" placeholder="${currentLang === 'id' ? 'Tuliskan evaluasi korektif...' : 'Enter constructive critique...'}" style="font-size:13px; resize:none;" required></textarea>
+          </div>
+          <div class="flex gap-2">
+            <button type="submit" class="btn btn-primary" style="flex-grow:1; padding:8px; font-size:13px;">${currentLang === 'id' ? 'Kirim Nilai' : 'Submit Scores'}</button>
+            <button type="button" onclick="renderMentorScoringPlaceholder()" class="btn btn-secondary" style="padding:8px; font-size:13px;">${currentLang === 'id' ? 'Batal' : 'Cancel'}</button>
+          </div>
+        </form>
+      `;
+    }
+
+    async function handleMentorScoringSubmit(e) {
+      e.preventDefault();
+      const r1 = parseInt(document.getElementById('rubric-1').value, 10);
+      const r2 = parseInt(document.getElementById('rubric-2').value, 10);
+      const comment = document.getElementById('mentor-comment').value;
+
+      const score = Math.round(((r1 + r2) / 20) * 100);
+
+      if (isServerOnline) {
+        const headers = { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${userToken}` 
+        };
+        try {
+          const res = await fetch('http://localhost:5000/api/feedback', {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({ 
+              submissionId: mentorActiveReviewSub.id, 
+              comment, 
+              score, 
+              rubricScoresJson: [{ criterion: 'Akurasi Garis', score: r1 }, { criterion: 'Struktur Bentuk 3D', score: r2 }]
+            })
+          });
+          const result = await res.json();
+          if (result.success) {
+            alert(currentLang === 'id' ? 'Skor evaluasi berhasil disimpan ke server!' : 'Scoring successfully saved to server!');
+            await syncDataFromServer();
+            renderFeedbackView();
+            return;
+          }
+        } catch (err) {
+          console.error("Server feedback failed", err);
+        }
+      }
+
+      // Fallback
+      const subIdx = submissions.findIndex(s => s.id === mentorActiveReviewSub.id);
+      submissions[subIdx].status = 'reviewed';
+      submissions[subIdx].feedback = {
+        score,
+        comment,
+        mentor_name: currentUser.name
+      };
+
+      saveToLocalStorage();
+      alert(currentLang === 'id' ? 'Feedback evaluasi berhasil dikirim!' : 'Feedback successfully submitted!');
+      renderFeedbackView();
+    }
+
+    // PORTFOLIO VIEW
+    function renderPortfolioView() {
+      document.getElementById('btn-add-portfolio').style.display = currentUser.role === roles.LEARNER ? 'block' : 'none';
+
+      const grid = document.getElementById('portfolio-grid-container');
+      grid.innerHTML = '';
+
+      const items = currentUser.role === roles.LEARNER ? portfolioItems.filter(p => p.user_id === currentUser.id) : portfolioItems;
+
+      if (items.length > 0) {
+        items.forEach(item => {
+          const isOwner = item.user_id === currentUser.id;
+          
+          grid.innerHTML += `
+            <div class="card card-hover" style="padding:0; overflow:hidden;" onclick="openLightbox(${JSON.stringify(item).replace(/"/g, '&quot;')})">
+              <img src="${item.image_url}" style="width:100%; height:160px; object-fit:cover;">
+              <div style="padding:16px;">
+                <h4 style="font-size:15px; margin-bottom:6px;">${item.title}</h4>
+                <p style="color:var(--text-secondary); font-size:12px; height:35px; overflow:hidden;">${item.reflection}</p>
+                <div class="flex gap-2" style="margin-top:10px;">
+                  ${item.tags.map(t => `<span class="tag tag-cyan" style="font-size:9px;">#${t}</span>`).join('')}
+                </div>
+                
+                ${currentUser.role === roles.LEARNER && isOwner ? `
+                  <div class="flex gap-2" style="margin-top:14px; border-top:1px solid rgba(255,255,255,0.05); padding-top:10px;">
+                    <button onclick="event.stopPropagation(); openEditPortfolio('${item.id}')" class="btn btn-secondary" style="padding:4px 8px; font-size:11px; flex-grow:1;">✏️ Edit</button>
+                    <button onclick="event.stopPropagation(); deletePortfolioItem('${item.id}')" class="btn" style="padding:4px 8px; font-size:11px; color:var(--error); background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.2); flex-grow:1;">🗑️ Hapus</button>
+                  </div>
+                ` : ''}
+              </div>
+            </div>
+          `;
+        });
+      } else {
+        grid.innerHTML = `<div class="card" style="grid-column: span 3; text-align:center; padding:40px; color:var(--text-muted);">${currentLang === 'id' ? 'Portofolio kosong.' : 'Portfolio empty.'}</div>`;
+      }
+    }
+
+    // PORTFOLIO ACTIONS
+    function openUploadPortfolioModal() {
+      editingPortfolioId = null;
+      document.getElementById('port-title').value = '';
+      document.getElementById('port-url').value = 'https://images.unsplash.com/photo-1605721911519-3dfeb3be25e7?auto=format&fit=crop&w=600&h=400&q=80';
+      document.getElementById('port-tags').value = '';
+      document.getElementById('port-reflection').value = '';
+
+      document.querySelector('#upload-portfolio-modal h3').setAttribute('data-i18n', 'up-modal-title');
+      document.querySelector('#upload-portfolio-modal button[type="submit"]').setAttribute('data-i18n', 'up-modal-btn-submit');
+      
+      updateLanguageUI();
+      document.getElementById('upload-portfolio-modal').style.display = 'flex';
+    }
+
+    function openEditPortfolio(id) {
+      const item = portfolioItems.find(p => p.id === id);
+      if (!item) return;
+      editingPortfolioId = id;
+
+      document.getElementById('port-title').value = item.title;
+      document.getElementById('port-url').value = item.image_url;
+      document.getElementById('port-tags').value = item.tags.join(', ');
+      document.getElementById('port-reflection').value = item.reflection;
+
+      // Remove translation key so we can set manually
+      document.querySelector('#upload-portfolio-modal h3').removeAttribute('data-i18n');
+      document.querySelector('#upload-portfolio-modal button[type="submit"]').removeAttribute('data-i18n');
+
+      document.querySelector('#upload-portfolio-modal h3').innerText = currentLang === 'id' ? 'Edit Karya Seni' : 'Edit Artwork';
+      document.querySelector('#upload-portfolio-modal button[type="submit"]').innerText = currentLang === 'id' ? 'Simpan Perubahan' : 'Save Changes';
+
+      document.getElementById('upload-portfolio-modal').style.display = 'flex';
+    }
+
+    function closeUploadPortfolioModal() {
+      document.getElementById('upload-portfolio-modal').style.display = 'none';
+      editingPortfolioId = null;
+    }
+
+    async function handleUploadPortfolio(e) {
+      e.preventDefault();
+      const title = document.getElementById('port-title').value;
+      const imageUrl = document.getElementById('port-url').value;
+      const tags = document.getElementById('port-tags').value.split(',').map(t => t.trim()).filter(Boolean);
+      const reflection = document.getElementById('port-reflection').value;
+
+      if (isServerOnline) {
+        const headers = { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${userToken}` 
+        };
+        try {
+          let res;
+          if (editingPortfolioId) {
+            res = await fetch(`http://localhost:5000/api/portfolio/${editingPortfolioId}`, {
+              method: 'PUT',
+              headers,
+              body: JSON.stringify({ title, imageUrl, reflection, tags })
+            });
+          } else {
+            res = await fetch('http://localhost:5000/api/portfolio', {
+              method: 'POST',
+              headers,
+              body: JSON.stringify({ title, imageUrl, reflection, tags })
+            });
+          }
+          const result = await res.json();
+          if (result.success) {
+            alert(currentLang === 'id' ? 'Karya seni berhasil disimpan ke server!' : 'Artwork successfully saved to server!');
+            await syncDataFromServer();
+            closeUploadPortfolioModal();
+            renderPortfolioView();
+            return;
+          }
+        } catch (err) {
+          console.error("Server action failed", err);
+        }
+      }
+
+      // Fallback
+      if (editingPortfolioId) {
+        const idx = portfolioItems.findIndex(p => p.id === editingPortfolioId);
+        if (idx !== -1) {
+          portfolioItems[idx].title = title;
+          portfolioItems[idx].image_url = imageUrl;
+          portfolioItems[idx].tags = tags.length > 0 ? tags : ['Art'];
+          portfolioItems[idx].reflection = reflection;
+        }
+        editingPortfolioId = null;
+        alert(currentLang === 'id' ? 'Perubahan karya seni berhasil disimpan!' : 'Artwork changes saved successfully!');
+      } else {
+        portfolioItems.unshift({
+          id: 'p_' + Date.now(),
+          user_id: currentUser.id,
+          title,
+          image_url: imageUrl,
+          reflection,
+          tags: tags.length > 0 ? tags : ['Art'],
+          is_featured: false,
+          created_at: new Date().toISOString()
+        });
+        alert(currentLang === 'id' ? 'Karya seni berhasil ditambahkan!' : 'Artwork successfully added!');
+      }
+
+      saveToLocalStorage();
+      closeUploadPortfolioModal();
+      renderPortfolioView();
+    }
+
+    async function deletePortfolioItem(id) {
+      const confirmMsg = currentLang === 'id' 
+        ? 'Apakah Anda yakin ingin menghapus karya seni ini dari portofolio?' 
+        : 'Are you sure you want to delete this artwork from your portfolio?';
+      
+      if (confirm(confirmMsg)) {
+        if (isServerOnline) {
+          const headers = { 'Authorization': `Bearer ${userToken}` };
+          try {
+            const res = await fetch(`http://localhost:5000/api/portfolio/${id}`, {
+              method: 'DELETE',
+              headers
+            });
+            const result = await res.json();
+            if (result.success) {
+              await syncDataFromServer();
+              renderPortfolioView();
+              return;
+            }
+          } catch (err) {
+            console.error("Server delete failed", err);
+          }
+        }
+
+        // Fallback
+        const filtered = portfolioItems.filter(p => p.id !== id);
+        portfolioItems.length = 0;
+        portfolioItems.push(...filtered);
+
+        saveToLocalStorage();
+        renderPortfolioView();
+      }
+    }
+
+    // LIGHTBOX ACTIONS
+    function openLightbox(item) {
+      document.getElementById('lightbox-img').src = item.image_url;
+      document.getElementById('lightbox-title').innerText = item.title;
+      document.getElementById('lightbox-reflection').innerText = item.reflection || 'Tidak ada catatan refleksi.';
+      
+      const tagsContainer = document.getElementById('lightbox-tags');
+      tagsContainer.innerHTML = '';
+      item.tags.forEach(t => {
+        tagsContainer.innerHTML += `<span class="tag tag-blue">#${t}</span>`;
+      });
+
+      document.getElementById('lightbox-modal').style.display = 'flex';
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox-modal').style.display = 'none';
+    }
+
+    // ADMIN CRUD DASHBOARD
+    function renderAdminDashboard() {
+      document.getElementById('adm-stat-users').innerText = users.length;
+      document.getElementById('adm-stat-modules').innerText = modules.length;
+      document.getElementById('adm-stat-subs').innerText = submissions.length;
+      document.getElementById('adm-stat-badges').innerText = badges.length;
+
+      document.getElementById('btn-adm-modules').innerText = `Modul (${modules.length})`;
+      document.getElementById('btn-adm-users').innerText = `Users (${users.length})`;
+      document.getElementById('btn-adm-subs').innerText = `Submissions (${submissions.length})`;
+
+      switchAdminTab(adminActiveTab);
+    }
+
+    function switchAdminTab(tabName) {
+      adminActiveTab = tabName;
+      
+      document.querySelectorAll('#view-admin .btn').forEach(btn => {
+        if (btn.id.includes(tabName)) {
+          btn.className = 'btn btn-primary';
+        } else {
+          btn.className = 'btn btn-secondary';
+        }
+      });
+
+      const crudContainer = document.getElementById('adm-crud-content');
+      crudContainer.innerHTML = '';
+
+      if (tabName === 'modules') {
+        crudContainer.innerHTML = `
+          <div class="flex justify-between items-center" style="margin-bottom:12px;">
+            <h4 style="font-weight:700;">Kelola Kurikulum Modul</h4>
+            <button onclick="openAdminModuleModal()" class="btn btn-primary" style="padding:6px 12px; font-size:12px;">➕ Tambah Modul</button>
+          </div>
+          <table>
+            <thead>
+              <tr><th>Judul Modul</th><th>Level</th><th>Kategori</th><th>Pelajaran</th><th>Aksi</th></tr>
+            </thead>
+            <tbody>
+              ${modules.map(m => {
+                const title = currentLang === 'id' ? m.title_id : m.title_en;
+                return `
+                  <tr>
+                    <td><strong>${title}</strong></td>
+                    <td><span class="tag tag-cyan">${m.level}</span></td>
+                    <td>${m.category}</td>
+                    <td>${lessons.filter(l => l.module_id === m.id).length} Lesson</td>
+                    <td>
+                      <div class="flex gap-2 items-center">
+                        <button onclick="openAdminLessonsList('${m.id}')" class="btn btn-secondary" style="padding:4px 8px; font-size:11px;">📖 Materi</button>
+                        <button onclick="openEditAdminModule('${m.id}')" style="background:transparent; border:none; color:var(--accent-cyan); font-size:16px; cursor:pointer;" title="Edit">✏️</button>
+                        <button onclick="deleteAdminModule('${m.id}')" style="background:transparent; border:none; color:var(--error); font-size:16px; cursor:pointer;" title="Hapus">🗑️</button>
+                      </div>
+                    </td>
+                  </tr>
+                `;
+              }).join('')}
+            </tbody>
+          </table>
+        `;
+      } else if (tabName === 'users') {
+        crudContainer.innerHTML = `
+          <h4 style="font-weight:700; margin-bottom:12px;">Daftar Pengguna Aktif</h4>
+          <table>
+            <thead>
+              <tr><th>Nama</th><th>Email</th><th>Role</th></tr>
+            </thead>
+            <tbody>
+              ${users.map(u => `
+                <tr>
+                  <td><strong>${u.name}</strong></td>
+                  <td>${u.email}</td>
+                  <td><span class="tag tag-blue">${u.role}</span></td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        `;
+      } else if (tabName === 'subs') {
+        crudContainer.innerHTML = `
+          <h4 style="font-weight:700; margin-bottom:12px;">Daftar Kiriman Tugas Siswa</h4>
+          <table>
+            <thead>
+              <tr><th>Karya</th><th>Pengirim</th><th>Lesson</th><th>Status</th><th>Skor</th></tr>
+            </thead>
+            <tbody>
+              ${submissions.map(s => `
+                <tr>
+                  <td><strong>${s.title}</strong></td>
+                  <td>${s.user_name}</td>
+                  <td>${s.lesson_title}</td>
+                  <td><span class="tag ${s.status === 'reviewed' ? 'tag-gold' : 'tag-blue'}">${s.status}</span></td>
+                  <td>${s.feedback ? s.feedback.score : '-'}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        `;
+      }
+    }
+
+    // ADMIN ACTIONS
+    function openAdminModuleModal() {
+      editingAdminModuleId = null;
+      document.getElementById('adm-mod-title').value = '';
+      document.getElementById('adm-mod-level').value = 'Beginner';
+      document.getElementById('adm-mod-category').value = 'Drawing';
+      document.getElementById('adm-mod-desc').value = '';
+
+      document.querySelector('#admin-module-modal h3').innerText = currentLang === 'id' ? 'Tambah Modul Seni' : 'Add Art Module';
+      document.getElementById('admin-module-modal').style.display = 'flex';
+    }
+
+    function openEditAdminModule(id) {
+      const mod = modules.find(m => m.id === id);
+      if (!mod) return;
+      editingAdminModuleId = id;
+
+      document.getElementById('adm-mod-title').value = currentLang === 'id' ? mod.title_id : mod.title_en;
+      document.getElementById('adm-mod-level').value = mod.level;
+      document.getElementById('adm-mod-category').value = mod.category;
+      document.getElementById('adm-mod-desc').value = currentLang === 'id' ? mod.description_id : mod.description_en;
+
+      document.querySelector('#admin-module-modal h3').innerText = currentLang === 'id' ? 'Edit Modul Seni' : 'Edit Art Module';
+      document.getElementById('admin-module-modal').style.display = 'flex';
+    }
+
+    function closeAdminModuleModal() {
+      document.getElementById('admin-module-modal').style.display = 'none';
+      editingAdminModuleId = null;
+    }
+
+    async function handleAdminCreateModule(e) {
+      e.preventDefault();
+      const title = document.getElementById('adm-mod-title').value;
+      const level = document.getElementById('adm-mod-level').value;
+      const category = document.getElementById('adm-mod-category').value;
+      const description = document.getElementById('adm-mod-desc').value;
+      const thumbnailUrl = 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=600&q=80';
+
+      if (isServerOnline) {
+        const headers = { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${userToken}` 
+        };
+        try {
+          let res;
+          if (editingAdminModuleId) {
+            res = await fetch(`http://localhost:5000/api/modules/${editingAdminModuleId}`, {
+              method: 'PUT',
+              headers,
+              body: JSON.stringify({ title, level, category, description, thumbnailUrl })
+            });
+          } else {
+            res = await fetch('http://localhost:5000/api/modules', {
+              method: 'POST',
+              headers,
+              body: JSON.stringify({ title, level, category, description, thumbnailUrl })
+            });
+          }
+          const result = await res.json();
+          if (result.success) {
+            alert(currentLang === 'id' ? 'Modul disimpan ke server!' : 'Module saved to server!');
+            await syncDataFromServer();
+            closeAdminModuleModal();
+            renderAdminDashboard();
+            return;
+          }
+        } catch (err) {
+          console.error("Server module operation failed", err);
+        }
+      }
+
+      // Fallback
+      if (editingAdminModuleId) {
+        const idx = modules.findIndex(m => m.id === editingAdminModuleId);
+        if (idx !== -1) {
+          modules[idx].title_id = title;
+          modules[idx].title_en = title;
+          modules[idx].level = level;
+          modules[idx].category = category;
+          modules[idx].description_id = description;
+          modules[idx].description_en = description;
+        }
+        editingAdminModuleId = null;
+        alert(currentLang === 'id' ? 'Modul berhasil diubah!' : 'Module successfully edited!');
+      } else {
+        modules.push({
+          id: 'm_' + Date.now(),
+          title_id: title,
+          title_en: title,
+          slug: title.toLowerCase().replace(/\s+/g, '-'),
+          level,
+          category,
+          description_id: description,
+          description_en: description,
+          thumbnail_url: thumbnailUrl,
+          is_published: true,
+          order_no: modules.length + 1
+        });
+        alert(currentLang === 'id' ? 'Modul baru berhasil ditambahkan!' : 'New module successfully added!');
+      }
+
+      saveToLocalStorage();
+      closeAdminModuleModal();
+      renderAdminDashboard();
+    }
+
+    async function deleteAdminModule(id) {
+      const confirmMsg = currentLang === 'id' ? 'Yakin ingin menghapus modul ini?' : 'Are you sure you want to delete this module?';
+      if (confirm(confirmMsg)) {
+        if (isServerOnline) {
+          const headers = { 'Authorization': `Bearer ${userToken}` };
+          try {
+            const res = await fetch(`http://localhost:5000/api/modules/${id}`, {
+              method: 'DELETE',
+              headers
+          });
+          const result = await res.json();
+            if (result.success) {
+              await syncDataFromServer();
+              renderAdminDashboard();
+              return;
+            }
+          } catch (err) {
+            console.error("Server delete module failed", err);
+          }
+        }
+
+        // Fallback
+        const filtered = modules.filter(m => m.id !== id);
+        modules.length = 0;
+        modules.push(...filtered);
+
+        saveToLocalStorage();
+        renderAdminDashboard();
+      }
+    }
+
+    // ADMIN LESSONS CRUD ACTIONS
+    let adminActiveModuleId = null;
+    let editingAdminLessonId = null;
+
+    function openAdminLessonsList(moduleId) {
+      adminActiveModuleId = moduleId;
+      const mod = modules.find(m => m.id === moduleId);
+      const modTitle = currentLang === 'id' ? mod.title_id : mod.title_en;
+      
+      document.getElementById('admin-lessons-modal-title').innerText = `${currentLang === 'id' ? 'Kelola Materi' : 'Manage Lessons'}: ${modTitle}`;
+      
+      renderAdminLessonsTable();
+      document.getElementById('admin-lessons-modal').style.display = 'flex';
+    }
+
+    function closeAdminLessonsModal() {
+      document.getElementById('admin-lessons-modal').style.display = 'none';
+      adminActiveModuleId = null;
+      renderAdminDashboard();
+    }
+
+    function renderAdminLessonsTable() {
+      const tableBody = document.getElementById('admin-lessons-table-body');
+      tableBody.innerHTML = '';
+      
+      const modLessons = lessons.filter(l => l.module_id === adminActiveModuleId);
+      
+      if (modLessons.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">${currentLang === 'id' ? 'Belum ada materi pelajaran.' : 'No lessons available yet.'}</td></tr>`;
+        return;
+      }
+
+      // Sort by order_no
+      modLessons.sort((a, b) => a.order_no - b.order_no);
+
+      modLessons.forEach((les, idx) => {
+        const title = currentLang === 'id' ? les.title_id : les.title_en;
+        const checklists = currentLang === 'id' ? les.checklist_id : les.checklist_en;
+        
+        tableBody.innerHTML += `
+          <tr>
+            <td><strong>${les.order_no}</strong></td>
+            <td><strong>${title}</strong></td>
+            <td><span style="font-family: monospace; font-size:11px; color:var(--text-muted);">${les.video_url}</span></td>
+            <td>${checklists ? checklists.length : 0} Item</td>
+            <td>
+              <div class="flex gap-2">
+                <button onclick="openEditAdminLesson('${les.id}')" style="background:transparent; border:none; color:var(--accent-cyan); font-size:15px; cursor:pointer;" title="Edit">✏️</button>
+                <button onclick="deleteAdminLesson('${les.id}')" style="background:transparent; border:none; color:var(--error); font-size:15px; cursor:pointer;" title="Hapus">🗑️</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    function openAddLessonModal() {
+      editingAdminLessonId = null;
+      document.getElementById('adm-les-title').value = '';
+      document.getElementById('adm-les-order').value = lessons.filter(l => l.module_id === adminActiveModuleId).length + 1;
+      document.getElementById('adm-les-video').value = 'https://www.youtube.com/embed/dQw4w9WgXcQ';
+      document.getElementById('adm-les-content').value = '';
+      document.getElementById('adm-les-checklist').value = '';
+
+      document.getElementById('admin-lesson-form-title').innerText = currentLang === 'id' ? 'Tambah Materi Pelajaran' : 'Add Lesson Material';
+      document.getElementById('admin-lesson-form-modal').style.display = 'flex';
+    }
+
+    function openEditAdminLesson(lessonId) {
+      const les = lessons.find(l => l.id === lessonId);
+      if (!les) return;
+      editingAdminLessonId = lessonId;
+
+      document.getElementById('adm-les-title').value = currentLang === 'id' ? les.title_id : les.title_en;
+      document.getElementById('adm-les-order').value = les.order_no;
+      document.getElementById('adm-les-video').value = les.video_url;
+      document.getElementById('adm-les-content').value = currentLang === 'id' ? les.content_id : les.content_en;
+      
+      const checklists = currentLang === 'id' ? les.checklist_id : les.checklist_en;
+      document.getElementById('adm-les-checklist').value = checklists ? checklists.join(', ') : '';
+
+      document.getElementById('admin-lesson-form-title').innerText = currentLang === 'id' ? 'Edit Materi Pelajaran' : 'Edit Lesson Material';
+      document.getElementById('admin-lesson-form-modal').style.display = 'flex';
+    }
+
+    function closeAdminLessonFormModal() {
+      document.getElementById('admin-lesson-form-modal').style.display = 'none';
+      editingAdminLessonId = null;
+    }
+
+    async function handleAdminSaveLesson(e) {
+      e.preventDefault();
+      const title = document.getElementById('adm-les-title').value;
+      const orderNo = parseInt(document.getElementById('adm-les-order').value, 10);
+      const videoUrl = document.getElementById('adm-les-video').value;
+      const content = document.getElementById('adm-les-content').value;
+      const checklistText = document.getElementById('adm-les-checklist').value;
+      const checklistJson = checklistText.split(',').map(t => t.trim()).filter(Boolean);
+
+      if (isServerOnline) {
+        const headers = { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${userToken}` 
+        };
+        try {
+          let res;
+          if (editingAdminLessonId) {
+            res = await fetch(`http://localhost:5000/api/lessons/${editingAdminLessonId}`, {
+              method: 'PUT',
+              headers,
+              body: JSON.stringify({ title, content, videoUrl, checklistJson, orderNo })
+            });
+          } else {
+            res = await fetch('http://localhost:5000/api/lessons', {
+              method: 'POST',
+              headers,
+              body: JSON.stringify({ moduleId: adminActiveModuleId, title, content, videoUrl, checklistJson, orderNo })
+            });
+          }
+          const result = await res.json();
+          if (result.success) {
+            alert(currentLang === 'id' ? 'Materi berhasil disimpan ke server!' : 'Material successfully saved to server!');
+            await syncDataFromServer();
+            closeAdminLessonFormModal();
+            renderAdminLessonsTable();
+            return;
+          }
+        } catch (err) {
+          console.error("Server lesson save failed", err);
+        }
+      }
+
+      // LocalStorage Fallback
+      if (editingAdminLessonId) {
+        const idx = lessons.findIndex(l => l.id === editingAdminLessonId);
+        if (idx !== -1) {
+          lessons[idx].title_id = title;
+          lessons[idx].title_en = title;
+          lessons[idx].order_no = orderNo;
+          lessons[idx].video_url = videoUrl;
+          lessons[idx].content_id = content;
+          lessons[idx].content_en = content;
+          lessons[idx].checklist_id = checklistJson;
+          lessons[idx].checklist_en = checklistJson;
+        }
+        editingAdminLessonId = null;
+        alert(currentLang === 'id' ? 'Materi pelajaran berhasil diperbarui!' : 'Lesson material successfully updated!');
+      } else {
+        lessons.push({
+          id: 'l_' + Date.now(),
+          module_id: adminActiveModuleId,
+          title_id: title,
+          title_en: title,
+          content_id: content,
+          content_en: content,
+          video_url: videoUrl,
+          checklist_id: checklistJson,
+          checklist_en: checklistJson,
+          order_no: orderNo,
+          is_published: true
+        });
+        alert(currentLang === 'id' ? 'Materi pelajaran baru berhasil ditambahkan!' : 'New lesson material successfully added!');
+      }
+
+      saveToLocalStorage();
+      closeAdminLessonFormModal();
+      renderAdminLessonsTable();
+    }
+
+    async function deleteAdminLesson(lessonId) {
+      const confirmMsg = currentLang === 'id' ? 'Apakah Anda yakin ingin menghapus materi pelajaran ini?' : 'Are you sure you want to delete this lesson material?';
+      if (confirm(confirmMsg)) {
+        if (isServerOnline) {
+          const headers = { 'Authorization': `Bearer ${userToken}` };
+          try {
+            const res = await fetch(`http://localhost:5000/api/lessons/${lessonId}`, {
+              method: 'DELETE',
+              headers
+            });
+            const result = await res.json();
+            if (result.success) {
+              lessons = lessons.filter(l => l.id !== lessonId);
+              renderAdminLessonsTable();
+              return;
+            }
+          } catch (err) {
+            console.error("Server delete lesson failed", err);
+          }
+        }
+
+        // Fallback
+        lessons = lessons.filter(l => l.id !== lessonId);
+        saveToLocalStorage();
+        renderAdminLessonsTable();
+      }
+    }
+  </script>
+
+</body>
+</html>
